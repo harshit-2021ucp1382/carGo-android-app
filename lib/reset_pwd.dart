@@ -1,7 +1,6 @@
 import 'package:cargo/reusable_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'reusable_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ResetPwd extends StatefulWidget {
   const ResetPwd({Key? key}) : super(key: key);
@@ -11,10 +10,37 @@ class ResetPwd extends StatefulWidget {
 }
 
 class _ResetPwdState extends State<ResetPwd> {
-  final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController emailController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final emailField = TextFormField(
+        autofocus: false,
+        controller: emailController,
+        keyboardType: TextInputType.emailAddress,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return ("Please Enter Your Email");
+          }
+          // reg expression for email validation
+          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+              .hasMatch(value)) {
+            return ("Please Enter a valid email");
+          }
+          return null;
+        },
+        onSaved: (value) {
+          emailController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.mail),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Email",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ));
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -38,14 +64,13 @@ class _ResetPwdState extends State<ResetPwd> {
               const SizedBox(
                 height: 20,
               ),
-              reusableTextField("Enter Email", Icons.person_outline, false,
-                  _emailTextController),
+              emailField,
               const SizedBox(
                 height: 15,
               ),
               firebaseButton(context, "Reset", () {
                 FirebaseAuth.instance
-                    .sendPasswordResetEmail(email: _emailTextController.text);
+                    .sendPasswordResetEmail(email: emailController.text);
               })
             ],
           )),
