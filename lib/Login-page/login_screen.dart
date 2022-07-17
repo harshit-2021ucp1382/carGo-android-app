@@ -1,9 +1,10 @@
-import 'package:cargo/home_screen.dart';
-import 'package:cargo/reset_pwd.dart';
-import 'package:cargo/registration_screen.dart';
+import 'package:cargo/Login-page/registration_screen.dart';
+import 'package:cargo/Login-page/reset_pwd.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import '../Home/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

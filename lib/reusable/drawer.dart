@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cargo/Login-page/login_screen.dart';
+import '../Admin-Corner/adminCorner.dart';
+import '../Contact-us/contactUs.dart';
+import '../Home/home_screen.dart';
+import '../Wishlist/wishlist.dart';
 import "color.dart";
-// import 'home.dart';
-// import 'adminCorner.dart';
-// import 'wishlist.dart';
-// import 'contactUs.dart';
-// import 'login.dart';
 
 final String role = "admin";
 
@@ -40,7 +40,7 @@ class MyDarwer extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Login()));
+                                  builder: (context) => const LoginScreen()));
                         },
                         child: Row(
                           children: [
@@ -69,8 +69,10 @@ class MyDarwer extends StatelessWidget {
           onTap: (curr_page == "Home")
               ? () {}
               : () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Home()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const HomeScreen()));
                 },
         ),
         SizedBox(
