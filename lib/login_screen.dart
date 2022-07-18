@@ -148,15 +148,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         logoWidget("assets/img/img_567494.png"),
-                        SizedBox(height: 45),
+                        const SizedBox(height: 45),
                         emailField,
-                        SizedBox(height: 25),
+                        const SizedBox(height: 25),
                         passwordField,
-                        SizedBox(height: 05),
+                        const SizedBox(height: 05),
                         forgetpassword(context),
                         const SizedBox(height: 35),
                         loginButton,
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
