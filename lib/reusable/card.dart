@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyCard extends StatelessWidget {
   const MyCard({Key? key, required this.data}) : super(key: key);
 
-  final Map data;
+  final Object? data;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,8 +15,8 @@ class MyCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              data["image"],
-              width: 500,
+              data["coverImage"],
+              width: MediaQuery.of(context).size.width / 1.1,
               height: 200,
             ),
             Padding(
