@@ -1,7 +1,10 @@
+import 'package:cargo/Admin-Corner/add_car.dart';
+import 'package:cargo/Admin-Corner/adminCorner.dart';
+import 'package:cargo/reusable/color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-import 'Login-page/login_screen.dart';
+//import 'Login-page/login_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,8 +13,9 @@ Future<void> main() async {
   runApp(MaterialApp(
     title: 'Email And Password Login',
     theme: ThemeData(
-      primarySwatch: Colors.blue,
+      primarySwatch: blue,
     ),
-    home: const LoginScreen(),
+    home: const AddCar(),
+    debugShowCheckedModeBanner: false,
   ));
 }
