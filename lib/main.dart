@@ -1,3 +1,7 @@
+import 'package:cargo/Admin-Corner/adminCorner.dart';
+import 'package:cargo/Home/Home.dart';
+import 'package:cargo/Home/home_screen.dart';
+import 'package:cargo/forms/register_car.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +16,6 @@ Future<void> main() async {
     theme: ThemeData(
       primarySwatch: Colors.blue,
     ),
-    home: const LoginScreen(),
+    home: add_car(),
   ));
 }
