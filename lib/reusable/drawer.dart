@@ -1,4 +1,6 @@
 import 'package:cargo/help/help.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cargo/Login-page/login_screen.dart';
 import '../Admin-Corner/adminCorner.dart';
@@ -6,8 +8,6 @@ import '../Contact-us/contactUs.dart';
 import '../Home/home_screen.dart';
 import '../Wishlist/wishlist.dart';
 import "color.dart";
-
-final String role = "admin";
 
 class MyDarwer extends StatelessWidget {
   const MyDarwer({Key? key, required this.data, required this.curr_page})
@@ -21,7 +21,7 @@ class MyDarwer extends StatelessWidget {
       child: ListView(padding: const EdgeInsets.all(0), children: <Widget>[
         data != null
             ? UserAccountsDrawerHeader(
-                accountName: Text("Name from server"),
+                accountName: Text("Name"),
                 accountEmail: Text("Mail from Server"),
                 currentAccountPicture: CircleAvatar(
                     backgroundImage: AssetImage("#")), //Image from Server
@@ -79,7 +79,7 @@ class MyDarwer extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        data != null && role == "admin"
+        data != null
             ? ListTile(
                 leading: Icon(Icons.car_rental),
                 title: Text("Admin's Corner"),
@@ -97,7 +97,7 @@ class MyDarwer extends StatelessWidget {
             : SizedBox(
                 height: 0,
               ),
-        data != null && role == "admin"
+        data != null
             ? SizedBox(
                 height: 10,
               )
