@@ -21,14 +21,15 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user?.uid)
-        .get()
-        .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
-      setState(() {});
-    });
+    if (loggedInUser != null)
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(user?.uid)
+          .get()
+          .then((value) {
+        this.loggedInUser = UserModel.fromMap(value.data());
+        setState(() {});
+      });
   }
 
   final _controller = TextEditingController();
