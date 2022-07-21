@@ -1,7 +1,5 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/help/help.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cargo/Admin-Corner/admin_login_screen.dart';
@@ -9,14 +7,11 @@ import '../Admin-Corner/adminCorner.dart';
 import '../Contact-us/contactUs.dart';
 import '../Home/home_screen.dart';
 import '../Wishlist/wishlist.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import "color.dart";
 import 'package:cargo/model/admin_model.dart';
 
-
-class MyDarwer extends StatelessWidget {
-
+class MyDarwer extends StatefulWidget {
   const MyDarwer({Key? key, required this.data, required this.curr_page})
       : super(key: key);
 
@@ -47,10 +42,9 @@ class _MyDarwerState extends State<MyDarwer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(children: <Widget>[
+        child: ListView(children: <Widget>[
+      ListView(padding: const EdgeInsets.all(0), children: <Widget>[
         loggedInUser.adid != null
-      child: ListView(padding: const EdgeInsets.all(0), children: <Widget>[
-        data != null
             ? UserAccountsDrawerHeader(
                 accountName: Text("${loggedInUser.firstName}"),
                 accountEmail: Text("${loggedInUser.email}"),
@@ -113,7 +107,6 @@ class _MyDarwerState extends State<MyDarwer> {
           height: 10,
         ),
         widget.data != null
-
             ? ListTile(
                 leading: Icon(Icons.car_rental),
                 title: Text("Admin's Corner"),
@@ -181,6 +174,6 @@ class _MyDarwerState extends State<MyDarwer> {
           },
         ),
       ]),
-    );
+    ]));
   }
 }
