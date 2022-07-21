@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../reusable/drawer.dart';
 
@@ -8,7 +9,7 @@ class contactUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Conatct Us")),
-      drawer: MyDarwer(data: null, curr_page: "Contact Us"),
+      drawer: MyDarwer(curr_page: "Contact Us"),
     );
   }
 }

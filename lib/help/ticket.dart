@@ -1,3 +1,4 @@
+import 'package:cargo/reusable/color.dart';
 import 'package:cargo/reusable/drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -14,26 +15,17 @@ class _ticketState extends State<ticket> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-              Color.fromARGB(255, 207, 58, 233),
-              Color.fromARGB(255, 0, 94, 255)
-            ])),
         child: Scaffold(
-            backgroundColor: Colors.transparent,
+            backgroundColor: white,
             appBar: AppBar(
               centerTitle: true,
               title: Text(
                 "Ticket",
                 style: TextStyle(color: Colors.white),
               ),
-              backgroundColor: Color.fromARGB(255, 90, 67, 218),
+              backgroundColor: blue,
               automaticallyImplyLeading: true,
             ),
-            drawer: MyDarwer(data: null, curr_page: "Contact Us"),
             body: SingleChildScrollView(
               child: Column(
                 children: <Widget>[

@@ -17,17 +17,15 @@ class adminCorner extends StatefulWidget {
 }
 
 class _adminCornerState extends State<adminCorner> {
-  String uid =
-      'hgCXgdi0ZvhWrijQrA10Kw9IVvs2'; //FirebaseAuth.instance.currentUser?.uid;
+  String? uid = null;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Admin's Corner")),
       drawer: MyDarwer(
-        data: FirebaseAuth.instance.currentUser?.uid,
         curr_page: "Admin's Corner",
       ),
-      body: (uid != null)
+      body: (FirebaseAuth.instance.currentUser != null)
           ? Container(
               decoration: BoxDecoration(color: white),
               height: MediaQuery.of(context).size.height,
@@ -47,6 +45,8 @@ class _adminCornerState extends State<adminCorner> {
                             child: Text("Fetch something"),
                           );
                         case ConnectionState.active:
+                          //return Container();
+                          break;
                         case ConnectionState.waiting:
                           return Center(
                             child: CircularProgressIndicator(),
@@ -59,10 +59,13 @@ class _adminCornerState extends State<adminCorner> {
                           }
                           return ListView.builder(
                             itemBuilder: (context, index) {
-                              return MyCard(data: snapshot.data);
+                              return ListTile(
+                                title: Text("kkfh"),
+                              );
                             },
                           );
                       }
+                      return (Container());
                     }),
               ),
             )
@@ -89,7 +92,7 @@ class _adminCornerState extends State<adminCorner> {
                 ),
               ),
             ),
-      floatingActionButton: (uid != null)
+      floatingActionButton: (FirebaseAuth.instance.currentUser != null)
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.push(context,
@@ -98,7 +101,6 @@ class _adminCornerState extends State<adminCorner> {
               child: Icon(Icons.add),
             )
           : null,
-
     );
   }
 }

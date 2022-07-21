@@ -1,4 +1,3 @@
-import 'package:cargo/Admin-Corner/adminCorner.dart';
 import 'package:cargo/Home/home_screen.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -13,10 +12,9 @@ Future<void> main() async {
   runApp(MaterialApp(
     title: 'Email And Password Login',
     theme: ThemeData(
-      primarySwatch: Colors.blue,
+      primarySwatch: blue,
     ),
-    home: HomeScreen(),
+    home: const HomeScreen(),
     debugShowCheckedModeBanner: false,
-
   ));
 }

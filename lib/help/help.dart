@@ -1,4 +1,5 @@
 import 'package:cargo/help/ticket.dart';
+import 'package:cargo/reusable/color.dart';
 import 'package:flutter/material.dart';
 import '../reusable/drawer.dart';
 
@@ -17,14 +18,6 @@ class _helpState extends State<help> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-              Color.fromARGB(255, 207, 58, 233),
-              Color.fromARGB(255, 0, 94, 255)
-            ])),
         child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -33,10 +26,10 @@ class _helpState extends State<help> {
                 "Help",
                 style: TextStyle(color: Colors.white),
               ),
-              backgroundColor: Color.fromARGB(255, 90, 67, 218),
+              backgroundColor: blue,
               automaticallyImplyLeading: true,
             ),
-            drawer: MyDarwer(data: null, curr_page: "Contact Us"),
+            drawer: MyDarwer(curr_page: "Contact Us"),
             body: SingleChildScrollView(
                 child: Column(children: <Widget>[
               Stack(alignment: Alignment.center, children: <Widget>[

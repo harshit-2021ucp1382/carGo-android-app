@@ -42,7 +42,7 @@ class _homeState extends State<home> {
               icon: const Icon(Icons.sort))
         ],
       ),
-      drawer: MyDarwer(data: null, curr_page: "Home"),
+      drawer: MyDarwer(curr_page: "Home"),
       body: Column(
         children: <Widget>[
           SizedBox(

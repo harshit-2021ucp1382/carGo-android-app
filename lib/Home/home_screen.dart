@@ -1,5 +1,6 @@
 import 'package:cargo/Home/filter.dart';
 import 'package:cargo/Home/search.dart';
+import 'package:cargo/reusable/color.dart';
 import 'package:cargo/reusable/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/model/user_model.dart';
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Center(
         child: Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 5, 171, 236),
+        backgroundColor: blue,
         title: Text("Home"),
         actions: [
           IconButton(
@@ -71,8 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.sort))
         ],
       ),
-      drawer: MyDarwer(
-          data: FirebaseAuth.instance.currentUser?.uid, curr_page: "Home"),
+      drawer: MyDarwer(curr_page: "Home"),
       body: Column(
         children: <Widget>[
           SizedBox(

@@ -1,3 +1,4 @@
+import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/help/help.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,10 +13,8 @@ import "color.dart";
 import 'package:cargo/model/admin_model.dart';
 
 class MyDarwer extends StatefulWidget {
-  const MyDarwer({Key? key, required this.data, required this.curr_page})
-      : super(key: key);
+  const MyDarwer({Key? key, required this.curr_page}) : super(key: key);
 
-  final Object? data;
   final String curr_page;
 
   @override
@@ -42,8 +41,7 @@ class _MyDarwerState extends State<MyDarwer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        child: ListView(children: <Widget>[
-      ListView(padding: const EdgeInsets.all(0), children: <Widget>[
+      child: ListView(padding: const EdgeInsets.all(0), children: <Widget>[
         loggedInUser.adid != null
             ? UserAccountsDrawerHeader(
                 accountName: Text("${loggedInUser.firstName}"),
@@ -106,32 +104,23 @@ class _MyDarwerState extends State<MyDarwer> {
         SizedBox(
           height: 10,
         ),
-        widget.data != null
-            ? ListTile(
-                leading: Icon(Icons.car_rental),
-                title: Text("Admin's Corner"),
-                trailing: Icon(Icons.arrow_right),
-                tileColor:
-                    (widget.curr_page == "Admin's Corner") ? grey : white,
-                onTap: (widget.curr_page == "Admin's Corner")
-                    ? () {}
-                    : () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const adminCorner()));
-                      },
-              )
-            : SizedBox(
-                height: 0,
-              ),
-        widget.data != null
-            ? SizedBox(
-                height: 10,
-              )
-            : SizedBox(
-                height: 0,
-              ),
+        ListTile(
+          leading: Icon(Icons.car_rental),
+          title: Text("Admin's Corner"),
+          trailing: Icon(Icons.arrow_right),
+          tileColor: (widget.curr_page == "Admin's Corner") ? grey : white,
+          onTap: (widget.curr_page == "Admin's Corner")
+              ? () {}
+              : () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const adminCorner()));
+                },
+        ),
+        SizedBox(
+          height: 10,
+        ),
         ListTile(
           leading: Icon(Icons.bookmark),
           title: Text("Your Wishlist"),
@@ -170,10 +159,10 @@ class _MyDarwerState extends State<MyDarwer> {
           trailing: Icon(Icons.arrow_left_rounded),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AdminLoginPage()));
+                MaterialPageRoute(builder: (context) => LoginScreen()));
           },
         ),
       ]),
-    ]));
+    );
   }
 }
