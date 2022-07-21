@@ -1,3 +1,6 @@
+import 'package:cargo/Home/filter.dart';
+import 'package:cargo/Home/search.dart';
+import 'package:cargo/reusable/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     FirebaseFirestore.instance
         .collection("users")
-        .doc(user!.uid)
+        .doc(user?.uid)
         .get()
         .then((value) {
       this.loggedInUser = UserModel.fromMap(value.data());
@@ -28,7 +31,53 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  final _controller = TextEditingController();
+
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 5, 171, 236),
+        title: Text("Home"),
+        actions: [
+          IconButton(
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => search())),
+              icon: const Icon(Icons.search)),
+          IconButton(
+              onPressed: () async {
+                var result = await Navigator.push(context,
+                    MaterialPageRoute(builder: (ctx) {
+                  return FilterScreen();
+                }));
+                print(result);
+              },
+              icon: const Icon(Icons.sort))
+        ],
+      ),
+      drawer: MyDarwer(data: null, curr_page: "Home"),
+      body: Column(
+        children: <Widget>[
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: <Widget>[],
+          ),
+        ],
+      ),
+    ));
+  }
+}
+
+/*@override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -72,12 +121,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
+  }*/
 
-  // the logout function
-  Future<void> logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginScreen()));
-  }
+// the logout function
+Future<void> logout(BuildContext context) async {
+  await FirebaseAuth.instance.signOut();
+  Navigator.of(context)
+      .pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
 }

@@ -1,5 +1,4 @@
 import 'package:cargo/Admin-Corner/add_car.dart';
-import 'package:cargo/Admin-Corner/adminCorner.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ Future<void> main() async {
     title: 'Email And Password Login',
     theme: ThemeData(
       primarySwatch: blue,
-    ),
     home: const AddCar(),
     debugShowCheckedModeBanner: false,
   ));
