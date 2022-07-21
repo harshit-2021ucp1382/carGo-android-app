@@ -36,8 +36,8 @@ class _adminCornerState extends State<adminCorner> {
                 child: StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('admins')
-                        .doc(
-                            'hgCXgdi0ZvhWrijQrA10Kw9IVvs2') //FirebaseAuth.instance.currentUser?.uid)
+                        .doc(FirebaseAuth.instance.currentUser
+                            ?.uid) //FirebaseAuth.instance.currentUser?.uid)
                         .collection('cars')
                         .snapshots(),
                     builder: (context, snapshot) {

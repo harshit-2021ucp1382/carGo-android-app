@@ -1,6 +1,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/help/help.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import '../Admin-Corner/adminCorner.dart';
@@ -12,9 +14,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import "color.dart";
 import 'package:cargo/model/admin_model.dart';
 
-final String role = "admin";
 
-class MyDarwer extends StatefulWidget {
+class MyDarwer extends StatelessWidget {
+
   const MyDarwer({Key? key, required this.data, required this.curr_page})
       : super(key: key);
 
@@ -110,7 +112,8 @@ class _MyDarwerState extends State<MyDarwer> {
         SizedBox(
           height: 10,
         ),
-        widget.data != null && role == "admin"
+        widget.data != null
+
             ? ListTile(
                 leading: Icon(Icons.car_rental),
                 title: Text("Admin's Corner"),
@@ -129,7 +132,7 @@ class _MyDarwerState extends State<MyDarwer> {
             : SizedBox(
                 height: 0,
               ),
-        widget.data != null && role == "admin"
+        widget.data != null
             ? SizedBox(
                 height: 10,
               )

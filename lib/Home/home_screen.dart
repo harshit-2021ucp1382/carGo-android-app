@@ -71,7 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.sort))
         ],
       ),
-      drawer: MyDarwer(data: null, curr_page: "Home"),
+      drawer: MyDarwer(
+          data: FirebaseAuth.instance.currentUser?.uid, curr_page: "Home"),
       body: Column(
         children: <Widget>[
           SizedBox(
