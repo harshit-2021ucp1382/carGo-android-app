@@ -1,30 +1,62 @@
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/help/help.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cargo/Login-page/login_screen.dart';
+import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import '../Admin-Corner/adminCorner.dart';
 import '../Contact-us/contactUs.dart';
 import '../Home/home_screen.dart';
 import '../Wishlist/wishlist.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import "color.dart";
+import 'package:cargo/model/admin_model.dart';
+
 
 class MyDarwer extends StatelessWidget {
+
   const MyDarwer({Key? key, required this.data, required this.curr_page})
       : super(key: key);
 
   final Object? data;
   final String curr_page;
+
+  @override
+  State<MyDarwer> createState() => _MyDarwerState();
+}
+
+class _MyDarwerState extends State<MyDarwer> {
+  User? admin = FirebaseAuth.instance.currentUser;
+  AdminModel loggedInUser = AdminModel();
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("admins")
+        .doc(admin?.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = AdminModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      child: ListView(children: <Widget>[
+        loggedInUser.adid != null
       child: ListView(padding: const EdgeInsets.all(0), children: <Widget>[
         data != null
             ? UserAccountsDrawerHeader(
-                accountName: Text("Name"),
-                accountEmail: Text("Mail from Server"),
+                accountName: Text("${loggedInUser.firstName}"),
+                accountEmail: Text("${loggedInUser.email}"),
                 currentAccountPicture: CircleAvatar(
-                    backgroundImage: AssetImage("#")), //Image from Server
+                    backgroundImage: AssetImage(
+                        "assets/img/admin_avtar.png")), //Image from Server
               )
             : DrawerHeader(
                 child: Column(
@@ -41,7 +73,8 @@ class MyDarwer extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()));
+                                  builder: (context) =>
+                                      const AdminLoginPage()));
                         },
                         child: Row(
                           children: [
@@ -66,8 +99,8 @@ class MyDarwer extends StatelessWidget {
           leading: Icon(Icons.home),
           title: Text("Home"),
           trailing: Icon(Icons.arrow_right),
-          tileColor: (curr_page == "Home") ? grey : white,
-          onTap: (curr_page == "Home")
+          tileColor: (widget.curr_page == "Home") ? grey : white,
+          onTap: (widget.curr_page == "Home")
               ? () {}
               : () {
                   Navigator.push(
@@ -79,13 +112,15 @@ class MyDarwer extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        data != null
+        widget.data != null
+
             ? ListTile(
                 leading: Icon(Icons.car_rental),
                 title: Text("Admin's Corner"),
                 trailing: Icon(Icons.arrow_right),
-                tileColor: (curr_page == "Admin's Corner") ? grey : white,
-                onTap: (curr_page == "Admin's Corner")
+                tileColor:
+                    (widget.curr_page == "Admin's Corner") ? grey : white,
+                onTap: (widget.curr_page == "Admin's Corner")
                     ? () {}
                     : () {
                         Navigator.push(
@@ -97,7 +132,7 @@ class MyDarwer extends StatelessWidget {
             : SizedBox(
                 height: 0,
               ),
-        data != null
+        widget.data != null
             ? SizedBox(
                 height: 10,
               )
@@ -108,8 +143,8 @@ class MyDarwer extends StatelessWidget {
           leading: Icon(Icons.bookmark),
           title: Text("Your Wishlist"),
           trailing: Icon(Icons.arrow_right),
-          tileColor: (curr_page == "Your Wishlist") ? grey : white,
-          onTap: (curr_page == "Your Wishlist")
+          tileColor: (widget.curr_page == "Your Wishlist") ? grey : white,
+          onTap: (widget.curr_page == "Your Wishlist")
               ? () {}
               : () {
                   Navigator.push(
@@ -125,13 +160,25 @@ class MyDarwer extends StatelessWidget {
           leading: Icon(Icons.headphones),
           title: Text("Contact Us"),
           trailing: Icon(Icons.arrow_right),
-          tileColor: (curr_page == "Contact Us") ? grey : white,
-          onTap: (curr_page == "Conatct Us")
+          tileColor: (widget.curr_page == "Contact Us") ? grey : white,
+          onTap: (widget.curr_page == "Conatct Us")
               ? () {}
               : () {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (context) => help()));
                 },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        ListTile(
+          leading: Icon(Icons.logout_rounded),
+          title: Text("Logout"),
+          trailing: Icon(Icons.arrow_left_rounded),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AdminLoginPage()));
+          },
         ),
       ]),
     );

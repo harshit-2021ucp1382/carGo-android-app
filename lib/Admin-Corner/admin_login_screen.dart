@@ -1,27 +1,22 @@
-import 'package:cargo/Login-page/registration_screen.dart';
-import 'package:cargo/Login-page/reset_pwd.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cargo/Admin-Corner/adminCorner.dart';
+import 'package:cargo/Admin-Corner/admin_registration_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cargo/Admin-Corner/admin_reset_pwd.dart';
+import 'admin_reset_pwd.dart';
 
-import '../Home/home_screen.dart';
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class AdminLoginPage extends StatefulWidget {
+  const AdminLoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  State<AdminLoginPage> createState() => _AdminLoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  // form key
+class _AdminLoginPageState extends State<AdminLoginPage> {
   final _formKey = GlobalKey<FormState>();
-
-  // editing controller
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
-
-  // firebase
+  final TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _passwordController = new TextEditingController();
   final _auth = FirebaseAuth.instance;
 
   // string for displaying the error Message
@@ -40,8 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
             style: TextStyle(color: Color.fromARGB(179, 33, 24, 188)),
             textAlign: TextAlign.right,
           ),
-          onPressed: () => Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ResetPwd())),
+          onPressed: () => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AdminResetPwd())),
         ),
       );
     }
@@ -49,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //email field
     final emailField = TextFormField(
         autofocus: false,
-        controller: emailController,
+        controller: _emailController,
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
           if (value!.isEmpty) {
@@ -63,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
           return null;
         },
         onSaved: (value) {
-          emailController.text = value!;
+          _emailController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -78,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //password field
     final passwordField = TextFormField(
         autofocus: false,
-        controller: passwordController,
+        controller: _passwordController,
         obscureText: true,
         validator: (value) {
           RegExp regex = RegExp(r'^.{6,}$');
@@ -90,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         },
         onSaved: (value) {
-          passwordController.text = value!;
+          _passwordController.text = value!;
         },
         textInputAction: TextInputAction.done,
         decoration: InputDecoration(
@@ -110,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           minWidth: MediaQuery.of(context).size.width,
           onPressed: () {
-            signIn(emailController.text, passwordController.text);
+            signIn(_emailController.text, _passwordController.text);
           },
           child: Text(
             "Login",
@@ -133,13 +128,12 @@ class _LoginScreenState extends State<LoginScreen> {
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             elevation: 0,
-            title: const Text("LoginPage"),
+            title: const Text("Admin LoginPage"),
             centerTitle: true,
           ),
           body: Center(
             child: SingleChildScrollView(
               child: Container(
-                color: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(36.0),
                   child: Form(
@@ -148,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        logoWidget("assets/img/img_567494.png"),
+                        Image.asset("assets/img/admin_icon.png"),
                         const SizedBox(height: 45),
                         emailField,
                         const SizedBox(height: 25),
@@ -168,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              RegistrationScreen()));
+                                              AdminRegScreen()));
                                 },
                                 child: Text(
                                   "SignUp",
@@ -189,7 +183,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ));
   }
 
-  // login function
   void signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -198,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const HomeScreen())),
+                      builder: (context) => const adminCorner())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {
@@ -229,14 +222,4 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
-}
-
-Image logoWidget(String imageName) {
-  return Image.asset(
-    imageName,
-    fit: BoxFit.fitWidth,
-    width: 240,
-    height: 240,
-    color: const Color.fromARGB(255, 37, 104, 230),
-  );
 }

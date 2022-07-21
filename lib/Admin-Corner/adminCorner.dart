@@ -5,6 +5,7 @@ import 'package:cargo/reusable/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cargo/model/admin_model.dart';
 
 import '../reusable/drawer.dart';
 
@@ -97,6 +98,7 @@ class _adminCornerState extends State<adminCorner> {
               child: Icon(Icons.add),
             )
           : null,
+
     );
   }
 }
