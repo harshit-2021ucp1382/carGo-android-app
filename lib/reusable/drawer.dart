@@ -18,7 +18,7 @@ class MyDarwer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(children: <Widget>[
+      child: ListView(padding: const EdgeInsets.all(0), children: <Widget>[
         data != null
             ? UserAccountsDrawerHeader(
                 accountName: Text("Name from server"),
