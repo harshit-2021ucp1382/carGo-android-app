@@ -1,4 +1,5 @@
-import 'package:cargo/Admin-Corner/add_car.dart';
+
+import 'package:cargo/Home/home_screen.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,9 @@ Future<void> main() async {
   runApp(MaterialApp(
     title: 'Email And Password Login',
     theme: ThemeData(
-      primarySwatch: blue,
-    home: const AddCar(),
+      primarySwatch: Colors.blue,
+    ),
+    home: HomeScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }
