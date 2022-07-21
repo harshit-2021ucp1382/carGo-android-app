@@ -1,4 +1,6 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cargo/help/help.dart';
 import 'package:flutter/material.dart';
 import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import '../Admin-Corner/adminCorner.dart';
@@ -45,6 +47,8 @@ class _MyDarwerState extends State<MyDarwer> {
     return Drawer(
       child: ListView(children: <Widget>[
         loggedInUser.adid != null
+      child: ListView(padding: const EdgeInsets.all(0), children: <Widget>[
+        data != null
             ? UserAccountsDrawerHeader(
                 accountName: Text("${loggedInUser.firstName}"),
                 accountEmail: Text("${loggedInUser.email}"),
@@ -158,9 +162,7 @@ class _MyDarwerState extends State<MyDarwer> {
               ? () {}
               : () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const contactUs()));
+                      context, MaterialPageRoute(builder: (context) => help()));
                 },
         ),
         const SizedBox(
