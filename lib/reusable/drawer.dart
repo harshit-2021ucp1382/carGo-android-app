@@ -1,3 +1,4 @@
+import 'package:cargo/help/help.dart';
 import 'package:flutter/material.dart';
 import 'package:cargo/Login-page/login_screen.dart';
 import '../Admin-Corner/adminCorner.dart';
@@ -129,9 +130,7 @@ class MyDarwer extends StatelessWidget {
               ? () {}
               : () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const contactUs()));
+                      context, MaterialPageRoute(builder: (context) => help()));
                 },
         ),
       ]),
