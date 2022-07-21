@@ -26,7 +26,9 @@ class _searchState extends State<search> {
   List<dynamic> _placeList = [];
 
   void autoCompleteSearch(String value) async {
-    var result = await googlePlace.queryAutocomplete.get(value);
+    var result = await googlePlace.queryAutocomplete.get("del");
+    print(result);
+    if (result != null) print(result.predictions);
     if (result != null) {
       print(result.predictions);
     }
@@ -79,12 +81,6 @@ class _searchState extends State<search> {
               ),
             ),
           ),
-          actions: [
-            IconButton(
-                onPressed: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (_) => filter())),
-                icon: const Icon(Icons.sort))
-          ],
         ),
         body: Column(
           children: <Widget>[

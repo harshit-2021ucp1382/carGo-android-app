@@ -18,6 +18,6 @@ Future<void> main() async {
     theme: ThemeData(
       primarySwatch: Colors.blue,
     ),
-    home: ticket(),
+    home: home(),
   ));
 }

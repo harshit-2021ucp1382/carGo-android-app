@@ -1,3 +1,4 @@
+import 'package:cargo/help/ticket.dart';
 import 'package:flutter/material.dart';
 import '../reusable/drawer.dart';
 
@@ -140,7 +141,10 @@ class _helpState extends State<help> {
                   child: MaterialButton(
                       padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                       minWidth: MediaQuery.of(context).size.width,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => ticket()));
+                      },
                       child: Text(
                         "Open A Ticket",
                         textAlign: TextAlign.center,
