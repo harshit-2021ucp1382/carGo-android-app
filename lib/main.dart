@@ -1,4 +1,3 @@
-import 'package:cargo/Admin-Corner/add_car.dart';
 import 'package:cargo/Admin-Corner/adminCorner.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -15,7 +14,7 @@ Future<void> main() async {
     theme: ThemeData(
       primarySwatch: blue,
     ),
-    home: const AddCar(),
+    home: const adminCorner(),
     debugShowCheckedModeBanner: false,
   ));
 }

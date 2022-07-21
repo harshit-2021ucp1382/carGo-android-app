@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     FirebaseFirestore.instance
         .collection("users")
-        .doc(user!.uid)
+        .doc(user?.uid)
         .get()
         .then((value) {
       this.loggedInUser = UserModel.fromMap(value.data());
