@@ -147,126 +147,126 @@ class _AddCarState extends State<AddCar> {
                     ),
                     keyboardType: TextInputType.number,
                   ),
-                  // SizedBox(height: 20),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Text(
-                  //       "Cover Image",
-                  //       style: TextStyle(fontSize: 17.5),
-                  //     ),
-                  //     SizedBox(width: 10),
-                  //     ElevatedButton(
-                  //       onPressed: () {
-                  //         _coverImg = getFile("coverPhoto");
-                  //       },
-                  //       child: Row(
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: <Widget>[
-                  //           Icon(Icons.upload),
-                  //           SizedBox(width: 5),
-                  //           Text("Upload")
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 10),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Text(
-                  //       "Other Images",
-                  //       style: TextStyle(fontSize: 17.5),
-                  //     ),
-                  //     SizedBox(width: 10),
-                  //     ElevatedButton(
-                  //       onPressed: () {
-                  //         getFile("otherImage");
-                  //       },
-                  //       child: Row(
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: <Widget>[
-                  //           Icon(Icons.upload),
-                  //           SizedBox(width: 5),
-                  //           Text("Upload")
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 10),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Text(
-                  //       "PUC Certificate",
-                  //       style: TextStyle(fontSize: 17.5),
-                  //     ),
-                  //     SizedBox(width: 10),
-                  //     ElevatedButton(
-                  //       onPressed: () {
-                  //         _puc = getFile("puc");
-                  //       },
-                  //       child: Row(
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: <Widget>[
-                  //           Icon(Icons.upload),
-                  //           SizedBox(width: 5),
-                  //           Text("Upload")
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 10),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Text(
-                  //       "Registration",
-                  //       style: TextStyle(fontSize: 17.5),
-                  //     ),
-                  //     SizedBox(width: 10),
-                  //     ElevatedButton(
-                  //       onPressed: () {
-                  //         _reg = getFile("regCertificate");
-                  //       },
-                  //       child: Row(
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: <Widget>[
-                  //           Icon(Icons.upload),
-                  //           SizedBox(width: 5),
-                  //           Text("Upload")
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                  // SizedBox(height: 10),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Text(
-                  //       "Insurance",
-                  //       style: TextStyle(fontSize: 17.5),
-                  //     ),
-                  //     SizedBox(width: 10),
-                  //     ElevatedButton(
-                  //       onPressed: () {
-                  //         _insurance = getFile("insurance");
-                  //       },
-                  //       child: Row(
-                  //         crossAxisAlignment: CrossAxisAlignment.center,
-                  //         mainAxisAlignment: MainAxisAlignment.center,
-                  //         children: <Widget>[
-                  //           Icon(Icons.upload),
-                  //           SizedBox(width: 5),
-                  //           Text("Upload")
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Cover Image",
+                        style: TextStyle(fontSize: 17.5),
+                      ),
+                      SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          //_coverImg = getFile("coverPhoto");
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.upload),
+                            SizedBox(width: 5),
+                            Text("Upload")
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Other Images",
+                        style: TextStyle(fontSize: 17.5),
+                      ),
+                      SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          //getFile("otherImage");
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.upload),
+                            SizedBox(width: 5),
+                            Text("Upload")
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "PUC Certificate",
+                        style: TextStyle(fontSize: 17.5),
+                      ),
+                      SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          //_puc = getFile("puc");
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.upload),
+                            SizedBox(width: 5),
+                            Text("Upload")
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Registration",
+                        style: TextStyle(fontSize: 17.5),
+                      ),
+                      SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          // _reg = getFile("regCertificate");
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.upload),
+                            SizedBox(width: 5),
+                            Text("Upload")
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: <Widget>[
+                      Text(
+                        "Insurance",
+                        style: TextStyle(fontSize: 17.5),
+                      ),
+                      SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          // _insurance = getFile("insurance");
+                        },
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Icon(Icons.upload),
+                            SizedBox(width: 5),
+                            Text("Upload")
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () {
