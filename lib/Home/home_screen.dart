@@ -7,6 +7,7 @@ import 'package:cargo/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../Login-page/login_screen.dart';
+import '../reusable/drawer2.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: const Icon(Icons.sort))
         ],
       ),
-      drawer: MyDarwer(curr_page: "Home"),
+      drawer: MyDrawer(curr_page: "Home"),
       body: Column(
         children: <Widget>[
           SizedBox(

@@ -1,40 +1,40 @@
+import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import 'package:cargo/Login-page/login_screen.dart';
-
+import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/help/help.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cargo/Admin-Corner/admin_login_screen.dart';
+
 import '../Admin-Corner/adminCorner.dart';
 
 import '../Home/home_screen.dart';
 import '../Wishlist/wishlist.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import "color.dart";
-import 'package:cargo/model/admin_model.dart';
 
-class MyDarwer extends StatefulWidget {
-  const MyDarwer({Key? key, required this.curr_page}) : super(key: key);
+import "color.dart";
+
+class MyDrawer extends StatefulWidget {
+  const MyDrawer({Key? key, required this.curr_page}) : super(key: key);
 
   final String curr_page;
 
   @override
-  State<MyDarwer> createState() => _MyDarwerState();
+  State<MyDrawer> createState() => _MyDrawerState();
 }
 
-class _MyDarwerState extends State<MyDarwer> {
-  User? admin = FirebaseAuth.instance.currentUser;
-  AdminModel loggedInAdmin = AdminModel();
+class _MyDrawerState extends State<MyDrawer> {
+  User? user = FirebaseAuth.instance.currentUser;
 
+  UserModel loggedInUser = UserModel();
   @override
   void initState() {
     super.initState();
     FirebaseFirestore.instance
-        .collection("admins")
-        .doc(admin?.uid)
+        .collection("users")
+        .doc(user!.uid)
         .get()
         .then((value) {
-      this.loggedInAdmin = AdminModel.fromMap(value.data());
+      this.loggedInUser = UserModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -43,10 +43,10 @@ class _MyDarwerState extends State<MyDarwer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(padding: const EdgeInsets.all(0), children: <Widget>[
-        loggedInAdmin.adid != null
+        loggedInUser.uid != null
             ? UserAccountsDrawerHeader(
-                accountName: Text("${loggedInAdmin.firstName}"),
-                accountEmail: Text("${loggedInAdmin.email}"),
+                accountName: Text("${loggedInUser.firstName}"),
+                accountEmail: Text("${loggedInUser.email}"),
                 currentAccountPicture: CircleAvatar(
                     backgroundImage: AssetImage(
                         "assets/img/admin_avtar.png")), //Image from Server
@@ -66,8 +66,7 @@ class _MyDarwerState extends State<MyDarwer> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AdminLoginPage()));
+                                  builder: (context) => const LoginScreen()));
                         },
                         child: Row(
                           children: [
@@ -159,8 +158,11 @@ class _MyDarwerState extends State<MyDarwer> {
           title: Text("Logout"),
           trailing: Icon(Icons.arrow_left_rounded),
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AdminLoginPage()));
+            Navigator.pop(context, true);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => AdminLoginPage()),
+            );
           },
         ),
       ]),
