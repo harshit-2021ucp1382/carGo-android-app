@@ -333,7 +333,8 @@ class _AddCarState extends State<AddCar> {
                           .collection("admins")
                           .doc(adid)
                           .collection("cars")
-                          .doc(carId);
+                          .doc(carId)
+                          .set(car.toJson());
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,5 +1,6 @@
 import 'package:cargo/Admin-Corner/add_car.dart';
 import 'package:cargo/Login-page/login_screen.dart';
+import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/card.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,6 +19,24 @@ class adminCorner extends StatefulWidget {
 
 class _adminCornerState extends State<adminCorner> {
   String? uid = null;
+  String adid = "hgCXgdi0ZvhWrijQrA10Kw9IVvs2";
+  List<Object> _cars = [];
+  Future getCars() async {
+    var data = await FirebaseFirestore.instance
+        .collection("admins")
+        .doc(adid)
+        .collection("cars")
+        .get();
+    setState(() {
+      _cars = List.from(data.docs.map((doc) => cardData.datastore(doc)));
+    });
+  }
+
+  void initState() {
+    super.initState();
+    getCars();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,42 +50,48 @@ class _adminCornerState extends State<adminCorner> {
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
               child: Center(
-                child: StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('admins')
-                        .doc(FirebaseAuth.instance.currentUser
-                            ?.uid) //FirebaseAuth.instance.currentUser?.uid)
-                        .collection('cars')
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                          return Center(
-                            child: Text("Fetch something"),
-                          );
-                        case ConnectionState.active:
-                          //return Container();
-                          break;
-                        case ConnectionState.waiting:
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        case ConnectionState.done:
-                          if (snapshot.hasError) {
-                            return Center(
-                              child: Text("Some Error occured"),
-                            );
-                          }
-                          return ListView.builder(
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text("kkfh"),
-                              );
-                            },
-                          );
-                      }
-                      return (Container());
-                    }),
+                child: SafeArea(
+                    child: ListView.builder(
+                        itemCount: _cars.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return MyCard(data: _cars[index] as cardData);
+                        })),
+                // child: StreamBuilder(
+                //     stream: FirebaseFirestore.instance
+                //         .collection('admins')
+                //         .doc(FirebaseAuth.instance.currentUser
+                //             ?.uid) //FirebaseAuth.instance.currentUser?.uid)
+                //         .collection('cars')
+                //         .snapshots(),
+                //     builder: (context, snapshot) {
+                //       switch (snapshot.connectionState) {
+                //         case ConnectionState.none:
+                //           return Center(
+                //             child: Text("Fetch something"),
+                //           );
+                //         case ConnectionState.active:
+                //           //return Container();
+                //           break;
+                //         case ConnectionState.waiting:
+                //           return Center(
+                //             child: CircularProgressIndicator(),
+                //           );
+                //         case ConnectionState.done:
+                //           if (snapshot.hasError) {
+                //             return Center(
+                //               child: Text("Some Error occured"),
+                //             );
+                //           }
+                //           return ListView.builder(
+                //             itemBuilder: (context, index) {
+                //               return ListTile(
+                //                 title: Text("kkfh"),
+                //               );
+                //             },
+                //           );
+                //       }
+                //       return (Container());
+                //     }),
               ),
             )
           : Center(
