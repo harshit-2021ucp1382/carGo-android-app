@@ -64,6 +64,7 @@ class cardData {
       : adid = snapshot.data()['adid'],
         carID = snapshot.data()['carID'],
         carNumber = snapshot.data()['carNumber'],
+        carModel = snapshot.data()['carModel'],
         image = snapshot.data()['image'],
         distance = snapshot.data()['distance'],
         seats = snapshot.data()['seats'],

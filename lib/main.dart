@@ -18,7 +18,7 @@ Future<void> main() async {
     theme: ThemeData(
       primarySwatch: blue,
     ),
-    home: AddCar(),
+    home: HomeScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }

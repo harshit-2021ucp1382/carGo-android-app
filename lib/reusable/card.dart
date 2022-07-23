@@ -16,11 +16,9 @@ class MyCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset(
-              "",
-              //data.image.toString(),
-              width: MediaQuery.of(context).size.width / 1.1,
-              height: 200,
+            Image.network(
+              data.image.toString(),
+              width: double.infinity,
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -30,7 +28,7 @@ class MyCard extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        "${data.carNumber.toString()}",
+                        "${data.carModel.toString()}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),

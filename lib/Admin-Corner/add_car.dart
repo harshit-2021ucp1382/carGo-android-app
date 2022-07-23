@@ -84,34 +84,6 @@ class _AddCarState extends State<AddCar> {
       return "error";
     }
   }
-  // late Future<String> _coverImg;
-  // late Future<List<String>> _otherImg;
-  // late Future<String> _puc;
-  // late Future<String> _reg;
-  // late Future<String> _insurance;
-
-  // FirebaseStorage storage = FirebaseStorage.instance;
-  // Future<String> getFile(String name) async {
-  //   //String? uid = FirebaseAuth.instance.currentUser?.uid;
-  //   String uid = 'hgCXgdi0ZvhWrijQrA10Kw9IVvs2';
-  //   File file;
-  //   String path =
-  //       "gs://cargo-android.appspot.com/car_images/${uid}/${uuid}/${name}";
-  //   FilePickerResult? result =
-  //       await FilePicker.platform.pickFiles(type: FileType.any);
-  //   if (result != null) {
-  //     file = File(result.files.single.path!);
-  //     try {
-  //       await storage.ref(path).putFile(file);
-  //       setState(() {});
-  //       return path;
-  //     } on FirebaseException catch (e) {
-  //       print(e);
-  //       return "\0";
-  //     }
-  //   } else
-  //     return "\0";
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -249,30 +221,6 @@ class _AddCarState extends State<AddCar> {
                     ],
                   ),
                   SizedBox(height: 10),
-                  /*Row(
-                    children: <Widget>[
-                      Text(
-                        "Other Images",
-                        style: TextStyle(fontSize: 17.5),
-                      ),
-                      SizedBox(width: 10),
-                      ElevatedButton(
-                        onPressed: () {
-                          //getFile("otherImage");
-                        },
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Icon(Icons.upload),
-                            SizedBox(width: 5),
-                            Text("Upload")
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),*/
-                  SizedBox(height: 10),
                   Row(
                     children: <Widget>[
                       Text(
@@ -381,6 +329,11 @@ class _AddCarState extends State<AddCar> {
                           .collection("cars")
                           .doc(carId)
                           .update(car.toJson());
+                      await FirebaseFirestore.instance
+                          .collection("admins")
+                          .doc(adid)
+                          .collection("cars")
+                          .doc(carId);
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
