@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:cargo/Admin-Corner/add_car_database.dart';
+import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/color.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -21,12 +23,72 @@ class _AddCarState extends State<AddCar> {
   final _dopController = TextEditingController();
   final _seatsController = TextEditingController();
   final _distController = TextEditingController();
+  final _priceController = TextEditingController();
+  String adid = 'hgCXgdi0ZvhWrijQrA10Kw9IVvs2';
+  late String carId;
+  PlatformFile? _coverfile;
+  PlatformFile? _insurance;
+  PlatformFile? _puc;
+  PlatformFile? _reg;
+  late String path_insurance = '';
+  late String path_img = '';
+  late String path_puc = '';
+  late String path_reg = '';
+  List<String> Urls = [];
+  Future coverimg() async {
+    final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ['jpg', 'png', 'jpeg']);
+    if (result == null) return;
+    setState(() {
+      _coverfile = result.files.first;
+    });
+  }
+
+  Future insurance() async {
+    final result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    if (result == null) return;
+    setState(() {
+      _insurance = result.files.first;
+    });
+  }
+
+  Future puc() async {
+    final result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    if (result == null) return;
+    setState(() {
+      _puc = result.files.first;
+    });
+  }
+
+  Future reg() async {
+    final result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: ['pdf']);
+    if (result == null) return;
+    setState(() {
+      _reg = result.files.first;
+    });
+  }
+
+  Future<String> upload(String path, PlatformFile? file, String item) async {
+    if (file != null) {
+      final f = File(file.path!);
+      final ref = await FirebaseStorage.instance.ref().child(path);
+      var uploadTask = ref.putFile(f);
+
+      final snap = await uploadTask.whenComplete(() {});
+      final url = await snap.ref.getDownloadURL();
+      return Future.value(url.toString());
+    } else {
+      return "error";
+    }
+  }
   // late Future<String> _coverImg;
   // late Future<List<String>> _otherImg;
   // late Future<String> _puc;
   // late Future<String> _reg;
   // late Future<String> _insurance;
-  var uuid = const Uuid().v1();
 
   // FirebaseStorage storage = FirebaseStorage.instance;
   // Future<String> getFile(String name) async {
@@ -134,6 +196,21 @@ class _AddCarState extends State<AddCar> {
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
+                    controller: _priceController,
+                    decoration: InputDecoration(
+                      hintText: "200",
+                      hintStyle: TextStyle(
+                        color: grey,
+                      ),
+                      labelText: "Price",
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
                     controller: _distController,
                     decoration: InputDecoration(
                       hintText: "99999",
@@ -157,7 +234,7 @@ class _AddCarState extends State<AddCar> {
                       SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          //_coverImg = getFile("coverPhoto");
+                          coverimg();
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,7 +249,7 @@ class _AddCarState extends State<AddCar> {
                     ],
                   ),
                   SizedBox(height: 10),
-                  Row(
+                  /*Row(
                     children: <Widget>[
                       Text(
                         "Other Images",
@@ -194,7 +271,7 @@ class _AddCarState extends State<AddCar> {
                         ),
                       ),
                     ],
-                  ),
+                  ),*/
                   SizedBox(height: 10),
                   Row(
                     children: <Widget>[
@@ -205,7 +282,7 @@ class _AddCarState extends State<AddCar> {
                       SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          //_puc = getFile("puc");
+                          puc();
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -229,7 +306,7 @@ class _AddCarState extends State<AddCar> {
                       SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          // _reg = getFile("regCertificate");
+                          reg();
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -253,7 +330,7 @@ class _AddCarState extends State<AddCar> {
                       SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          // _insurance = getFile("insurance");
+                          insurance();
                         },
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -269,15 +346,41 @@ class _AddCarState extends State<AddCar> {
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
-                    onPressed: () {
-                      addCarDB(
-                        uuid,
-                        _modelController.text,
-                        _numberController.text,
-                        _dopController.text,
-                        _seatsController.text,
-                        _distController.text,
-                      );
+                    onPressed: () async {
+                      cardData car = cardData();
+                      car.carModel = _modelController.text;
+                      car.adid = adid;
+                      car.carNumber = _numberController.text;
+                      car.distance = _distController.text;
+                      car.seats = _seatsController.text;
+                      car.dop = _dopController.text;
+                      await FirebaseFirestore.instance
+                          .collection("cars")
+                          .add(car.toJson())
+                          .then((value) {
+                        carId = value.id;
+                      });
+                      car.carID = carId;
+                      car.Rating = "0 Stars";
+                      car.Price = _priceController.text;
+
+                      car.image = await upload(
+                          "cars_data/" + carId + "/cover", _coverfile, "image");
+                      print(path_img);
+                      car.puc = await upload(
+                          "cars_data/" + carId + "/puc", _puc, "puc");
+                      car.registration = await upload(
+                          "cars_data/" + carId + "/reg", _reg, "reg");
+                      ;
+                      car.insurance = await upload(
+                          "cars_data/" + carId + "/insurance",
+                          _insurance,
+                          "insurance");
+                      ;
+                      await FirebaseFirestore.instance
+                          .collection("cars")
+                          .doc(carId)
+                          .update(car.toJson());
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

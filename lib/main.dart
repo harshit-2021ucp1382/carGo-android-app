@@ -1,4 +1,5 @@
 import 'package:cargo/Admin-Corner/add_car.dart';
+import 'package:cargo/Admin-Corner/adminCorner.dart';
 import 'package:cargo/Home/Home.dart';
 import 'package:cargo/Home/home_screen.dart';
 import 'package:cargo/forms/register_car.dart';
@@ -17,7 +18,7 @@ Future<void> main() async {
     theme: ThemeData(
       primarySwatch: blue,
     ),
-    home: HomeScreen(),
+    home: AddCar(),
     debugShowCheckedModeBanner: false,
   ));
 }

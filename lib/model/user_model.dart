@@ -30,6 +30,7 @@ class UserModel {
 }
 
 class cardData {
+  String? adid;
   String? carID;
   String? carModel;
   String? carNumber;
@@ -41,9 +42,11 @@ class cardData {
   String? registration;
   String? Price;
   String? Rating;
+  String? insurance;
   cardData();
   Map<String, dynamic> toJson() => {
-        'cardId': carID,
+        'adid': adid,
+        'carID': carID,
         'carModel': carModel,
         'carNumber': carNumber,
         'image': image,
@@ -53,10 +56,13 @@ class cardData {
         "puc": puc,
         "registration": registration,
         "Price": Price,
-        'Rating': Rating
+        'Rating': Rating,
+        'insurance': insurance
       };
+
   cardData.datastore(snapshot)
-      : carID = snapshot.data()['carID'],
+      : adid = snapshot.data()['adid'],
+        carID = snapshot.data()['carID'],
         carNumber = snapshot.data()['carNumber'],
         image = snapshot.data()['image'],
         distance = snapshot.data()['distance'],
@@ -65,5 +71,6 @@ class cardData {
         puc = snapshot.data()['puc'],
         registration = snapshot.data()['registraion'],
         Price = snapshot.data()['Price'],
-        Rating = snapshot.data()['Rating'];
+        Rating = snapshot.data()['Rating'],
+        insurance = snapshot.data()['insurance'];
 }
