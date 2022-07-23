@@ -1,3 +1,5 @@
+import 'package:cargo/Home/filter.dart';
+
 class UserModel {
   String? uid;
   String? email;

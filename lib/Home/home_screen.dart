@@ -1,11 +1,13 @@
 import 'package:cargo/Home/filter.dart';
 import 'package:cargo/Home/search.dart';
+import 'package:cargo/reusable/card.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:cargo/reusable/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_place/google_place.dart';
 import '../Login-page/login_screen.dart';
 import '../reusable/drawer2.dart';
 
@@ -19,10 +21,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
+  cardData card = cardData();
+  List<Object> _cars = [];
+  Future getCars() async {
+    var data = await FirebaseFirestore.instance.collection("cars").get();
+    setState(() {
+      _cars = List.from(data.docs.map((doc) => cardData.datastore(doc)));
+    });
+  }
 
   @override
   void initState() {
     super.initState();
+    getCars();
     FirebaseFirestore.instance
         .collection("users")
         .doc(user?.uid)
@@ -54,85 +65,34 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Center(
         child: Scaffold(
-      appBar: AppBar(
-        backgroundColor: blue,
-        title: Text("Home"),
-        actions: [
-          IconButton(
-              onPressed: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => search())),
-              icon: const Icon(Icons.search)),
-          IconButton(
-              onPressed: () async {
-                var result = await Navigator.push(context,
-                    MaterialPageRoute(builder: (ctx) {
-                  return FilterScreen();
-                }));
-                print(result);
-              },
-              icon: const Icon(Icons.sort))
-        ],
-      ),
-      drawer: MyDrawer(curr_page: "Home"),
-      body: Column(
-        children: <Widget>[
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: <Widget>[],
-          ),
-        ],
-      ),
-    ));
+            appBar: AppBar(
+              backgroundColor: blue,
+              title: Text("Home"),
+              actions: [
+                IconButton(
+                    onPressed: () => Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => search())),
+                    icon: const Icon(Icons.search)),
+                IconButton(
+                    onPressed: () async {
+                      var result = await Navigator.push(context,
+                          MaterialPageRoute(builder: (ctx) {
+                        return FilterScreen();
+                      }));
+                      print(result);
+                    },
+                    icon: const Icon(Icons.sort))
+              ],
+            ),
+            drawer: MyDarwer(curr_page: "Home"),
+            body: SafeArea(
+                child: ListView.builder(
+                    itemCount: _cars.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MyCard(data: _cars[index] as cardData);
+                    }))));
   }
 }
-
-/*@override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Welcome"),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Welcome Back",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              Text("${loggedInUser.email}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              SizedBox(
-                height: 15,
-              ),
-              ActionChip(
-                  label: Text("Logout"),
-                  onPressed: () {
-                    logout(context);
-                  }),
-            ],
-          ),
-        ),
-      ),
-    );
-  }*/
 
 // the logout function
 Future<void> logout(BuildContext context) async {
