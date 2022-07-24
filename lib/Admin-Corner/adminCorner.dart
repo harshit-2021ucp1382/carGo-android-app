@@ -1,4 +1,5 @@
 import 'package:cargo/Admin-Corner/add_car.dart';
+import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/card.dart';
@@ -7,16 +8,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:cargo/model/admin_model.dart';
 import '../reusable/drawer.dart';
 
-class adminCorner extends StatefulWidget {
-  const adminCorner({
+class AdminCorner extends StatefulWidget {
+  const AdminCorner({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<adminCorner> createState() => _adminCornerState();
+  State<AdminCorner> createState() => _AdminCornerState();
 }
 
 class _adminCornerState extends State<adminCorner> {
@@ -66,8 +66,8 @@ class _adminCornerState extends State<adminCorner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Admin's Corner")),
-      drawer: MyDarwer(
+      appBar: AppBar(title: const Text("Admin's Corner")),
+      drawer: const MyDarwer(
         curr_page: "Admin's Corner",
       ),
       body: (logged_admin)
@@ -89,15 +89,15 @@ class _adminCornerState extends State<adminCorner> {
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => LoginScreen())));
+                            builder: ((context) => const AdminLoginPage())));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Icon(Icons.login),
                       SizedBox(width: 5),
                       Text("Login to continue"),
@@ -111,9 +111,9 @@ class _adminCornerState extends State<adminCorner> {
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => AddCar())));
+                    MaterialPageRoute(builder: ((context) => const AddCar())));
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             )
           : null,
     );

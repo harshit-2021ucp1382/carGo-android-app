@@ -116,7 +116,7 @@ class _MyDarwerState extends State<MyDarwer> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const adminCorner()));
+                          builder: (context) => const AdminCorner()));
                 },
         ),
         SizedBox(

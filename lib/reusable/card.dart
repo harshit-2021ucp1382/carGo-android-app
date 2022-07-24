@@ -141,6 +141,7 @@ class _MyCardState extends State<MyCard> {
                               width: 3,
                             ),
                             IconButton(
+
                               onPressed: () {
                                 Navigator.push(
                                     context,

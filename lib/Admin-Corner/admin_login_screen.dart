@@ -16,8 +16,8 @@ class AdminLoginPage extends StatefulWidget {
 
 class _AdminLoginPageState extends State<AdminLoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = new TextEditingController();
-  final TextEditingController _passwordController = new TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _auth = FirebaseAuth.instance;
 
   // string for displaying the error Message
@@ -36,7 +36,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             style: TextStyle(color: Color.fromARGB(179, 33, 24, 188)),
             textAlign: TextAlign.right,
           ),
-          onPressed: () => Navigator.push(context,
+          onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => AdminResetPwd())),
         ),
       );
@@ -123,10 +123,12 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
+
           onPressed: () {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: ((context) => HomeScreen())));
           },
+
         ),
       ),
       body: Center(
@@ -188,7 +190,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             .then((uid) => {
                   Fluttertoast.showToast(msg: "Login Successful"),
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                      builder: (context) => const adminCorner())),
+                      builder: (context) => const AdminCorner())),
                 });
       } on FirebaseAuthException catch (error) {
         switch (error.code) {

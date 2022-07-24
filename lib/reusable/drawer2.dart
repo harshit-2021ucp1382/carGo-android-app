@@ -2,6 +2,7 @@ import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/Wishlist/booked.dart';
 import 'package:cargo/model/admin_model.dart';
+import 'package:cargo/Wishlist/wishlist.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/help/help.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import '../Admin-Corner/adminCorner.dart';
 
 import '../Home/home_screen.dart';
-import '../Wishlist/wishlist.dart';
 
 import "color.dart";
 
@@ -134,7 +134,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const adminCorner()));
+                          builder: (context) => const AdminCorner()));
                 },
         ),
         SizedBox(
@@ -150,6 +150,7 @@ class _MyDrawerState extends State<MyDrawer> {
               : () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => whislist()));
+
                 },
         ),
         SizedBox(
@@ -165,6 +166,7 @@ class _MyDrawerState extends State<MyDrawer> {
               : () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => booked()));
+
                 },
         ),
         SizedBox(

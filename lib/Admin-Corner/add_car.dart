@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:cargo/Admin-Corner/add_car_database.dart';
 import 'package:cargo/model/admin_model.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/color.dart';
@@ -8,7 +7,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 class AddCar extends StatefulWidget {
   const AddCar({Key? key}) : super(key: key);
@@ -25,6 +23,8 @@ class _AddCarState extends State<AddCar> {
   final _seatsController = TextEditingController();
   final _distController = TextEditingController();
   final _priceController = TextEditingController();
+
+  String adid = FirebaseAuth.instance.currentUser!.uid;
   final _typeController = TextEditingController();
   User? admin = FirebaseAuth.instance.currentUser;
   AdminModel loggedInAdmin = AdminModel();
@@ -40,17 +40,19 @@ class _AddCarState extends State<AddCar> {
       setState(() {});
     });
   }
-
+  
   late String carId;
   PlatformFile? _coverfile;
   PlatformFile? _insurance;
   PlatformFile? _puc;
   PlatformFile? _reg;
-  late String path_insurance = '';
-  late String path_img = '';
-  late String path_puc = '';
-  late String path_reg = '';
-  List<String> Urls = [];
+  late String pathInsurance = '';
+  late String pathImg = '';
+  late String pathPuc = '';
+  late String pathReg = '';
+  List<String> urls = [];
+  var added = false;
+
   Future coverimg() async {
     final result = await FilePicker.platform.pickFiles(
         type: FileType.custom, allowedExtensions: ['jpg', 'png', 'jpeg']);
@@ -90,7 +92,7 @@ class _AddCarState extends State<AddCar> {
   Future<String> upload(String path, PlatformFile? file, String item) async {
     if (file != null) {
       final f = File(file.path!);
-      final ref = await FirebaseStorage.instance.ref().child(path);
+      final ref = FirebaseStorage.instance.ref().child(path);
       var uploadTask = ref.putFile(f);
 
       final snap = await uploadTask.whenComplete(() {});
@@ -98,6 +100,46 @@ class _AddCarState extends State<AddCar> {
       return Future.value(url.toString());
     } else {
       return "error";
+    }
+  }
+
+  Future<bool> addDB() async {
+    try {
+      cardData car = cardData();
+      car.carModel = _modelController.text;
+      car.adid = adid;
+      car.carNumber = _numberController.text;
+      car.distance = _distController.text;
+      car.seats = _seatsController.text;
+      car.dop = _dopController.text;
+      await FirebaseFirestore.instance
+          .collection("cars")
+          .add(car.toJson())
+          .then((value) {
+        carId = value.id;
+      });
+      car.carID = carId;
+      car.Rating = "0 Stars";
+      car.Price = _priceController.text;
+
+      car.image = await upload("cars_data/$carId/cover", _coverfile, "image");
+      car.puc = await upload("cars_data/$carId/puc", _puc, "puc");
+      car.registration = await upload("cars_data/$carId/reg", _reg, "reg");
+      car.insurance =
+          await upload("cars_data/$carId/insurance", _insurance, "insurance");
+      await FirebaseFirestore.instance
+          .collection("cars")
+          .doc(carId)
+          .update(car.toJson());
+      await FirebaseFirestore.instance
+          .collection("admins")
+          .doc(adid)
+          .collection("cars")
+          .doc(carId)
+          .set(car.toJson());
+      return true;
+    } catch (e) {
+      return false;
     }
   }
 
@@ -186,7 +228,7 @@ class _AddCarState extends State<AddCar> {
                   TextFormField(
                     controller: _priceController,
                     decoration: InputDecoration(
-                      hintText: "200",
+                      hintText: "9999",
                       hintStyle: TextStyle(
                         color: grey,
                       ),
@@ -212,14 +254,14 @@ class _AddCarState extends State<AddCar> {
                     ),
                     keyboardType: TextInputType.number,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     children: <Widget>[
-                      Text(
+                      const Text(
                         "Cover Image",
                         style: TextStyle(fontSize: 17.5),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
                           coverimg();
@@ -227,7 +269,7 @@ class _AddCarState extends State<AddCar> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(Icons.upload),
                             SizedBox(width: 5),
                             Text("Upload")
@@ -236,14 +278,14 @@ class _AddCarState extends State<AddCar> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     children: <Widget>[
-                      Text(
+                      const Text(
                         "PUC Certificate",
                         style: TextStyle(fontSize: 17.5),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
                           puc();
@@ -251,7 +293,7 @@ class _AddCarState extends State<AddCar> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(Icons.upload),
                             SizedBox(width: 5),
                             Text("Upload")
@@ -260,14 +302,14 @@ class _AddCarState extends State<AddCar> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     children: <Widget>[
-                      Text(
+                      const Text(
                         "Registration",
                         style: TextStyle(fontSize: 17.5),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
                           reg();
@@ -275,7 +317,7 @@ class _AddCarState extends State<AddCar> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(Icons.upload),
                             SizedBox(width: 5),
                             Text("Upload")
@@ -284,14 +326,14 @@ class _AddCarState extends State<AddCar> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     children: <Widget>[
-                      Text(
+                      const Text(
                         "Insurance",
                         style: TextStyle(fontSize: 17.5),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
                           insurance();
@@ -299,7 +341,7 @@ class _AddCarState extends State<AddCar> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
+                          children: const <Widget>[
                             Icon(Icons.upload),
                             SizedBox(width: 5),
                             Text("Upload")
@@ -311,47 +353,19 @@ class _AddCarState extends State<AddCar> {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () async {
-                      cardData car = cardData();
-                      car.carModel = _modelController.text;
-                      car.adid = loggedInAdmin.adid;
-                      car.carNumber = _numberController.text;
-                      car.distance = _distController.text;
-                      car.seats = _seatsController.text;
-                      car.dop = _dopController.text;
-                      car.type = "null";
-                      await FirebaseFirestore.instance
-                          .collection("cars")
-                          .add(car.toJson())
-                          .then((value) {
-                        carId = value.id;
-                      });
-                      car.carID = carId;
-                      car.Rating = "0 Stars";
-                      car.Price = _priceController.text;
-
-                      car.image = await upload(
-                          "cars_data/" + carId + "/cover", _coverfile, "image");
-                      print(path_img);
-                      car.puc = await upload(
-                          "cars_data/" + carId + "/puc", _puc, "puc");
-                      car.registration = await upload(
-                          "cars_data/" + carId + "/reg", _reg, "reg");
-                      ;
-                      car.insurance = await upload(
-                          "cars_data/" + carId + "/insurance",
-                          _insurance,
-                          "insurance");
-                      ;
-                      await FirebaseFirestore.instance
-                          .collection("cars")
-                          .doc(carId)
-                          .update(car.toJson());
-                      await FirebaseFirestore.instance
-                          .collection("admins")
-                          .doc(loggedInAdmin.adid)
-                          .collection("cars")
-                          .doc(carId)
-                          .set(car.toJson());
+                      added = addDB() as bool;
+                      (added)
+                          ? showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  _success(context),
+                            )
+                          : showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  _failure(context),
+                            );
+                      Navigator.pop(context);
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -371,4 +385,32 @@ class _AddCarState extends State<AddCar> {
       ),
     );
   }
+}
+
+Widget _success(BuildContext context) {
+  return AlertDialog(
+    title: const Text("Success"),
+    content: const Text("Your car was successfully added to our database"),
+    actions: <Widget>[
+      ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text("OK"))
+    ],
+  );
+}
+
+Widget _failure(BuildContext context) {
+  return AlertDialog(
+    title: const Text("Failure"),
+    content: const Text("We encountered some error.Please try again"),
+    actions: <Widget>[
+      ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text("OK"))
+    ],
+  );
 }

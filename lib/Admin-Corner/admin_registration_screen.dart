@@ -338,7 +338,7 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
 
     Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context) => adminCorner()),
+        MaterialPageRoute(builder: (context) => AdminCorner()),
         (route) => false);
   }
 }
