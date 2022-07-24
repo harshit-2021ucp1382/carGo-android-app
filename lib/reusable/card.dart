@@ -1,20 +1,24 @@
+import 'package:cargo/Home/car_details.dart';
 import 'package:cargo/Home/home_screen.dart';
 import 'package:cargo/Wishlist/wishlist.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path/path.dart';
 
 class MyCard extends StatefulWidget {
+  const MyCard({Key? key, required this.data}) : super(key: key);
+
   final cardData data;
-  MyCard({Key? key, required this.data}) : super(key: key);
 
   @override
   State<MyCard> createState() => _MyCardState();
 }
 
 class _MyCardState extends State<MyCard> {
+
+
   User? user = FirebaseAuth.instance.currentUser;
   String uid = "";
   late cardData data;
@@ -36,6 +40,10 @@ class _MyCardState extends State<MyCard> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+
+            Image.network(
+              widget.data.image.toString(),
+              width: double.infinity,
             Stack(
               children: <Widget>[
                 Container(
@@ -86,7 +94,7 @@ class _MyCardState extends State<MyCard> {
                   Column(
                     children: [
                       Text(
-                        "${data.carModel.toString()}",
+                        "${widget.data.carModel.toString()}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
@@ -96,24 +104,28 @@ class _MyCardState extends State<MyCard> {
                       //Text(data["Details"]),
                     ],
                   ),
-                  Text("${data.Rating.toString()}/5 stars"),
+                  Text("${widget.data.Rating.toString()}/5 stars"),
                   ElevatedButton(
                       onPressed: () {},
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            Text(data.Price.toString()),
+                            Text(widget.data.Price.toString()),
                             SizedBox(
-                              width: 5,
+                              width: 3,
                             ),
                             IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const HomeScreen()));
-                                },
-                                icon: Icon(Icons.forward))
+
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => carDetails(
+                                            data: data as cardData)));
+                              },
+                              icon: const Icon(Icons.arrow_forward_sharp),
+                            )
                           ],
                         ),
                       )),
