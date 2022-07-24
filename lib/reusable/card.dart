@@ -1,11 +1,27 @@
+import 'package:cargo/Home/car_details.dart';
 import 'package:cargo/Home/home_screen.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
-class MyCard extends StatelessWidget {
+class MyCard extends StatefulWidget {
   const MyCard({Key? key, required this.data}) : super(key: key);
 
   final cardData data;
+
+  @override
+  State<MyCard> createState() => _MyCardState();
+}
+
+class _MyCardState extends State<MyCard> {
+  late cardData data;
+  @override
+  void initState() {
+    super.initState();
+    data = widget.data;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,7 +33,7 @@ class MyCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Image.network(
-              data.image.toString(),
+              widget.data.image.toString(),
               width: double.infinity,
             ),
             Padding(
@@ -28,7 +44,7 @@ class MyCard extends StatelessWidget {
                   Column(
                     children: [
                       Text(
-                        "${data.carModel.toString()}",
+                        "${widget.data.carModel.toString()}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20),
                       ),
@@ -38,18 +54,27 @@ class MyCard extends StatelessWidget {
                       //Text(data["Details"]),
                     ],
                   ),
-                  Text("${data.Rating.toString()}/5 stars"),
+                  Text("${widget.data.Rating.toString()}/5 stars"),
                   ElevatedButton(
                       onPressed: () {},
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            Text(data.Price.toString()),
+                            Text(widget.data.Price.toString()),
                             SizedBox(
-                              width: 5,
+                              width: 3,
                             ),
-                            Icon(Icons.arrow_forward_sharp),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => carDetails(
+                                            data: data as cardData)));
+                              },
+                              icon: const Icon(Icons.arrow_forward_sharp),
+                            )
                           ],
                         ),
                       )),

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cargo/Admin-Corner/add_car_database.dart';
+import 'package:cargo/model/admin_model.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +25,22 @@ class _AddCarState extends State<AddCar> {
   final _seatsController = TextEditingController();
   final _distController = TextEditingController();
   final _priceController = TextEditingController();
-  String adid = 'hgCXgdi0ZvhWrijQrA10Kw9IVvs2';
+  final _typeController = TextEditingController();
+  User? admin = FirebaseAuth.instance.currentUser;
+  AdminModel loggedInAdmin = AdminModel();
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("admins")
+        .doc(loggedInAdmin.adid)
+        .get()
+        .then((value) {
+      this.loggedInAdmin = AdminModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+
   late String carId;
   PlatformFile? _coverfile;
   PlatformFile? _insurance;
@@ -297,11 +313,12 @@ class _AddCarState extends State<AddCar> {
                     onPressed: () async {
                       cardData car = cardData();
                       car.carModel = _modelController.text;
-                      car.adid = adid;
+                      car.adid = loggedInAdmin.adid;
                       car.carNumber = _numberController.text;
                       car.distance = _distController.text;
                       car.seats = _seatsController.text;
                       car.dop = _dopController.text;
+                      car.type = "null";
                       await FirebaseFirestore.instance
                           .collection("cars")
                           .add(car.toJson())
@@ -331,7 +348,7 @@ class _AddCarState extends State<AddCar> {
                           .update(car.toJson());
                       await FirebaseFirestore.instance
                           .collection("admins")
-                          .doc(adid)
+                          .doc(loggedInAdmin.adid)
                           .collection("cars")
                           .doc(carId)
                           .set(car.toJson());

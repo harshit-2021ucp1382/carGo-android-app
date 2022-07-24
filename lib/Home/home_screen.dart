@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: const Icon(Icons.sort))
               ],
             ),
-            drawer: MyDarwer(curr_page: "Home"),
+            drawer: MyDrawer(curr_page: "Home"),
             body: SafeArea(
                 child: ListView.builder(
                     itemCount: _cars.length,
