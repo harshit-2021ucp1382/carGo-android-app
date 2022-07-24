@@ -123,21 +123,6 @@ class _MyDarwerState extends State<MyDarwer> {
           height: 10,
         ),
         ListTile(
-          leading: Icon(Icons.bookmark),
-          title: Text("Your Wishlist"),
-          trailing: Icon(Icons.arrow_right),
-          tileColor: (widget.curr_page == "Your Wishlist") ? grey : white,
-          onTap: (widget.curr_page == "Your Wishlist")
-              ? () {}
-              : () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => whislist()));
-                },
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        ListTile(
           leading: Icon(Icons.headphones),
           title: Text("Contact Us"),
           trailing: Icon(Icons.arrow_right),
@@ -157,7 +142,8 @@ class _MyDarwerState extends State<MyDarwer> {
           title: Text("Logout"),
           trailing: Icon(Icons.arrow_left_rounded),
           onTap: () {
-            Navigator.push(context,
+            FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => AdminLoginPage()));
           },
         ),

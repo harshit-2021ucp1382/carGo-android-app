@@ -24,6 +24,19 @@ class _adminCornerState extends State<adminCorner> {
   AdminModel loggedInAdmin = AdminModel();
   cardData card = cardData();
   List<Object> _admincars = [];
+  User? user = FirebaseAuth.instance.currentUser;
+  late bool logged_admin = false;
+  late cardData data;
+  getuser() async {
+    var info = await FirebaseFirestore.instance
+        .collection("admins")
+        .doc(admin?.uid)
+        .get();
+    logged_admin = info.exists;
+    print("777777777777777777");
+    print(admin?.uid);
+  }
+
   Future getCars() async {
     var data = await FirebaseFirestore.instance
         .collection("admins")
@@ -39,6 +52,7 @@ class _adminCornerState extends State<adminCorner> {
   void initState() {
     super.initState();
     getCars();
+    getuser();
     FirebaseFirestore.instance
         .collection("users")
         .doc(admin?.uid)
@@ -56,7 +70,7 @@ class _adminCornerState extends State<adminCorner> {
       drawer: MyDarwer(
         curr_page: "Admin's Corner",
       ),
-      body: (FirebaseAuth.instance.currentUser != null)
+      body: (logged_admin)
           ? Container(
               decoration: BoxDecoration(color: white),
               height: MediaQuery.of(context).size.height,
@@ -68,42 +82,6 @@ class _adminCornerState extends State<adminCorner> {
                         itemBuilder: (BuildContext context, int index) {
                           return MyCard(data: _admincars[index] as cardData);
                         })),
-                // child: StreamBuilder(
-                //     stream: FirebaseFirestore.instance
-                //         .collection('admins')
-                //         .doc(FirebaseAuth.instance.currentUser
-                //             ?.uid) //FirebaseAuth.instance.currentUser?.uid)
-                //         .collection('cars')
-                //         .snapshots(),
-                //     builder: (context, snapshot) {
-                //       switch (snapshot.connectionState) {
-                //         case ConnectionState.none:
-                //           return Center(
-                //             child: Text("Fetch something"),
-                //           );
-                //         case ConnectionState.active:
-                //           //return Container();
-                //           break;
-                //         case ConnectionState.waiting:
-                //           return Center(
-                //             child: CircularProgressIndicator(),
-                //           );
-                //         case ConnectionState.done:
-                //           if (snapshot.hasError) {
-                //             return Center(
-                //               child: Text("Some Error occured"),
-                //             );
-                //           }
-                //           return ListView.builder(
-                //             itemBuilder: (context, index) {
-                //               return ListTile(
-                //                 title: Text("kkfh"),
-                //               );
-                //             },
-                //           );
-                //       }
-                //       return (Container());
-                //     }),
               ),
             )
           : Center(
@@ -129,7 +107,7 @@ class _adminCornerState extends State<adminCorner> {
                 ),
               ),
             ),
-      floatingActionButton: (FirebaseAuth.instance.currentUser != null)
+      floatingActionButton: (logged_admin)
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.push(context,

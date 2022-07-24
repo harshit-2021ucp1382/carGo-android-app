@@ -1,5 +1,6 @@
 import 'package:cargo/Admin-Corner/adminCorner.dart';
 import 'package:cargo/Admin-Corner/admin_registration_screen.dart';
+import 'package:cargo/Home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -115,72 +116,68 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
           )),
     );
 
-    return Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-              Color.fromARGB(255, 207, 58, 233),
-              Color.fromARGB(255, 0, 94, 255)
-            ])),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            elevation: 0,
-            title: const Text("Admin LoginPage"),
-            centerTitle: true,
-          ),
-          body: Center(
-            child: SingleChildScrollView(
-              child: Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(36.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Image.asset("assets/img/admin_icon.png"),
-                        const SizedBox(height: 45),
-                        emailField,
-                        const SizedBox(height: 25),
-                        passwordField,
-                        const SizedBox(height: 05),
-                        forgetpassword(context),
-                        const SizedBox(height: 35),
-                        loginButton,
-                        const SizedBox(height: 15),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text("Don't have an account? "),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              AdminRegScreen()));
-                                },
-                                child: Text(
-                                  "SignUp",
-                                  style: TextStyle(
-                                      color: Colors.redAccent,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
-                                ),
-                              )
-                            ])
-                      ],
-                    ),
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text("Admin LoginPage"),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: ((context) => HomeScreen())));
+          },
+        ),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset("assets/img/admin_icon.png"),
+                    const SizedBox(height: 45),
+                    emailField,
+                    const SizedBox(height: 25),
+                    passwordField,
+                    const SizedBox(height: 05),
+                    forgetpassword(context),
+                    const SizedBox(height: 35),
+                    loginButton,
+                    const SizedBox(height: 15),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Don't have an account? "),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AdminRegScreen()));
+                            },
+                            child: Text(
+                              "SignUp",
+                              style: TextStyle(
+                                  color: Colors.redAccent,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15),
+                            ),
+                          )
+                        ])
+                  ],
                 ),
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void signIn(String email, String password) async {
