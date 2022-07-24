@@ -129,10 +129,8 @@ class _MyDrawerState extends State<MyDrawer> {
           onTap: (widget.curr_page == "Your Wishlist")
               ? () {}
               : () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const wishlist()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => whislist()));
                 },
         ),
         SizedBox(
