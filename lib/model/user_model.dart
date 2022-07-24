@@ -43,6 +43,7 @@ class cardData {
   String? Price;
   String? Rating;
   String? insurance;
+  String? type;
   cardData();
   Map<String, dynamic> toJson() => {
         'adid': adid,
@@ -57,7 +58,8 @@ class cardData {
         "registration": registration,
         "Price": Price,
         'Rating': Rating,
-        'insurance': insurance
+        'insurance': insurance,
+        'type': type
       };
 
   cardData.datastore(snapshot)
@@ -73,5 +75,6 @@ class cardData {
         registration = snapshot.data()['registraion'],
         Price = snapshot.data()['Price'],
         Rating = snapshot.data()['Rating'],
-        insurance = snapshot.data()['insurance'];
+        insurance = snapshot.data()['insurance'],
+        type = snapshot.data()['type'];
 }

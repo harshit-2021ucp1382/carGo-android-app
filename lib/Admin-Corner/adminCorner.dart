@@ -1,48 +1,59 @@
 import 'package:cargo/Admin-Corner/add_car.dart';
+import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/card.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:cargo/model/admin_model.dart';
 import '../reusable/drawer.dart';
 
-class adminCorner extends StatefulWidget {
-  const adminCorner({
+class AdminCorner extends StatefulWidget {
+  const AdminCorner({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<adminCorner> createState() => _adminCornerState();
+  State<AdminCorner> createState() => _AdminCornerState();
 }
 
 class _adminCornerState extends State<adminCorner> {
-  String? uid = null;
-  String adid = "hgCXgdi0ZvhWrijQrA10Kw9IVvs2";
-  List<Object> _cars = [];
+  User? admin = FirebaseAuth.instance.currentUser;
+  AdminModel loggedInAdmin = AdminModel();
+  cardData card = cardData();
+  List<Object> _admincars = [];
   Future getCars() async {
     var data = await FirebaseFirestore.instance
         .collection("admins")
-        .doc(adid)
+        .doc(admin?.uid)
         .collection("cars")
         .get();
     setState(() {
-      _cars = List.from(data.docs.map((doc) => cardData.datastore(doc)));
+      _admincars = List.from(data.docs.map((doc) => cardData.datastore(doc)));
     });
   }
 
+  @override
   void initState() {
     super.initState();
     getCars();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(admin?.uid)
+        .get()
+        .then((value) {
+      this.loggedInAdmin = AdminModel.fromMap(value.data());
+      setState(() {});
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Admin's Corner")),
-      drawer: MyDarwer(
+      appBar: AppBar(title: const Text("Admin's Corner")),
+      drawer: const MyDarwer(
         curr_page: "Admin's Corner",
       ),
       body: (FirebaseAuth.instance.currentUser != null)
@@ -53,46 +64,10 @@ class _adminCornerState extends State<adminCorner> {
               child: Center(
                 child: SafeArea(
                     child: ListView.builder(
-                        itemCount: _cars.length,
+                        itemCount: _admincars.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return MyCard(data: _cars[index] as cardData);
+                          return MyCard(data: _admincars[index] as cardData);
                         })),
-                // child: StreamBuilder(
-                //     stream: FirebaseFirestore.instance
-                //         .collection('admins')
-                //         .doc(FirebaseAuth.instance.currentUser
-                //             ?.uid) //FirebaseAuth.instance.currentUser?.uid)
-                //         .collection('cars')
-                //         .snapshots(),
-                //     builder: (context, snapshot) {
-                //       switch (snapshot.connectionState) {
-                //         case ConnectionState.none:
-                //           return Center(
-                //             child: Text("Fetch something"),
-                //           );
-                //         case ConnectionState.active:
-                //           //return Container();
-                //           break;
-                //         case ConnectionState.waiting:
-                //           return Center(
-                //             child: CircularProgressIndicator(),
-                //           );
-                //         case ConnectionState.done:
-                //           if (snapshot.hasError) {
-                //             return Center(
-                //               child: Text("Some Error occured"),
-                //             );
-                //           }
-                //           return ListView.builder(
-                //             itemBuilder: (context, index) {
-                //               return ListTile(
-                //                 title: Text("kkfh"),
-                //               );
-                //             },
-                //           );
-                //       }
-                //       return (Container());
-                //     }),
               ),
             )
           : Center(
@@ -100,15 +75,15 @@ class _adminCornerState extends State<adminCorner> {
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => LoginScreen())));
+                            builder: ((context) => const AdminLoginPage())));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
+                    children: const <Widget>[
                       Icon(Icons.login),
                       SizedBox(width: 5),
                       Text("Login to continue"),
@@ -122,9 +97,9 @@ class _adminCornerState extends State<adminCorner> {
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: ((context) => AddCar())));
+                    MaterialPageRoute(builder: ((context) => const AddCar())));
               },
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             )
           : null,
     );
