@@ -1,6 +1,9 @@
 import 'package:cargo/Home/car_details.dart';
 import 'package:cargo/Home/home_screen.dart';
+import 'package:cargo/Wishlist/wishlist.dart';
 import 'package:cargo/model/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 
@@ -14,11 +17,16 @@ class MyCard extends StatefulWidget {
 }
 
 class _MyCardState extends State<MyCard> {
+
+
+  User? user = FirebaseAuth.instance.currentUser;
+  String uid = "";
   late cardData data;
   @override
   void initState() {
     super.initState();
     data = widget.data;
+    uid = user!.uid.toString();
     setState(() {});
   }
 
@@ -32,9 +40,51 @@ class _MyCardState extends State<MyCard> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+
             Image.network(
               widget.data.image.toString(),
               width: double.infinity,
+            Stack(
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(data.image.toString()),
+                    ),
+                  ),
+                ),
+                IconButton(
+                    onPressed: () async {
+                      var exist = await FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(uid)
+                          .collection("whislist")
+                          .doc(data.carID)
+                          .get();
+                      if (!exist.exists) {
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(uid)
+                            .collection("whislist")
+                            .doc(data.carID)
+                            .set(data.toJson());
+                        Fluttertoast.showToast(msg: "Car Added to Whislist");
+                      } else {
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(uid)
+                            .collection("whislist")
+                            .doc(data.carID)
+                            .delete();
+                        Fluttertoast.showToast(
+                            msg: "Car Removed From Whislist");
+                      }
+                    },
+                    icon: Icon(Icons.library_add)),
+              ],
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),

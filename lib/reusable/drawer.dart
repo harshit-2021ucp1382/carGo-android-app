@@ -130,10 +130,8 @@ class _MyDarwerState extends State<MyDarwer> {
           onTap: (widget.curr_page == "Your Wishlist")
               ? () {}
               : () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const wishlist()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => whislist()));
                 },
         ),
         SizedBox(
