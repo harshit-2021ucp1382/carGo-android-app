@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cargo/model/admin_model.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,6 +25,22 @@ class _AddCarState extends State<AddCar> {
   final _priceController = TextEditingController();
 
   String adid = FirebaseAuth.instance.currentUser!.uid;
+  final _typeController = TextEditingController();
+  User? admin = FirebaseAuth.instance.currentUser;
+  AdminModel loggedInAdmin = AdminModel();
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("admins")
+        .doc(loggedInAdmin.adid)
+        .get()
+        .then((value) {
+      this.loggedInAdmin = AdminModel.fromMap(value.data());
+      setState(() {});
+    });
+  }
+  
   late String carId;
   PlatformFile? _coverfile;
   PlatformFile? _insurance;

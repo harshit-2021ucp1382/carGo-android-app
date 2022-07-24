@@ -6,6 +6,7 @@ import 'package:cargo/reusable/card.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../reusable/drawer.dart';
 
@@ -18,18 +19,19 @@ class AdminCorner extends StatefulWidget {
   State<AdminCorner> createState() => _AdminCornerState();
 }
 
-class _AdminCornerState extends State<AdminCorner> {
-  String? adid = FirebaseAuth.instance.currentUser?.uid;
-  List<Object> _cars = [];
-
+class _adminCornerState extends State<adminCorner> {
+  User? admin = FirebaseAuth.instance.currentUser;
+  AdminModel loggedInAdmin = AdminModel();
+  cardData card = cardData();
+  List<Object> _admincars = [];
   Future getCars() async {
     var data = await FirebaseFirestore.instance
         .collection("admins")
-        .doc(adid)
+        .doc(admin?.uid)
         .collection("cars")
         .get();
     setState(() {
-      _cars = List.from(data.docs.map((doc) => cardData.datastore(doc)));
+      _admincars = List.from(data.docs.map((doc) => cardData.datastore(doc)));
     });
   }
 
@@ -37,6 +39,14 @@ class _AdminCornerState extends State<AdminCorner> {
   void initState() {
     super.initState();
     getCars();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(admin?.uid)
+        .get()
+        .then((value) {
+      this.loggedInAdmin = AdminModel.fromMap(value.data());
+      setState(() {});
+    });
   }
 
   @override
@@ -54,9 +64,9 @@ class _AdminCornerState extends State<AdminCorner> {
               child: Center(
                 child: SafeArea(
                     child: ListView.builder(
-                        itemCount: _cars.length,
+                        itemCount: _admincars.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return MyCard(data: _cars[index] as cardData);
+                          return MyCard(data: _admincars[index] as cardData);
                         })),
               ),
             )
