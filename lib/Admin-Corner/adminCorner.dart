@@ -24,6 +24,19 @@ class _adminCornerState extends State<adminCorner> {
   AdminModel loggedInAdmin = AdminModel();
   cardData card = cardData();
   List<Object> _admincars = [];
+  User? user = FirebaseAuth.instance.currentUser;
+  late bool logged_admin = false;
+  late cardData data;
+  getuser() async {
+    var info = await FirebaseFirestore.instance
+        .collection("admins")
+        .doc(admin?.uid)
+        .get();
+    logged_admin = info.exists;
+    print("777777777777777777");
+    print(admin?.uid);
+  }
+
   Future getCars() async {
     var data = await FirebaseFirestore.instance
         .collection("admins")
@@ -39,6 +52,7 @@ class _adminCornerState extends State<adminCorner> {
   void initState() {
     super.initState();
     getCars();
+    getuser();
     FirebaseFirestore.instance
         .collection("users")
         .doc(admin?.uid)
@@ -56,7 +70,7 @@ class _adminCornerState extends State<adminCorner> {
       drawer: const MyDarwer(
         curr_page: "Admin's Corner",
       ),
-      body: (FirebaseAuth.instance.currentUser != null)
+      body: (logged_admin)
           ? Container(
               decoration: BoxDecoration(color: white),
               height: MediaQuery.of(context).size.height,
@@ -93,7 +107,7 @@ class _adminCornerState extends State<adminCorner> {
                 ),
               ),
             ),
-      floatingActionButton: (FirebaseAuth.instance.currentUser != null)
+      floatingActionButton: (logged_admin)
           ? FloatingActionButton(
               onPressed: () {
                 Navigator.push(context,

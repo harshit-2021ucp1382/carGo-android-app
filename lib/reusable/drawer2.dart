@@ -1,5 +1,7 @@
 import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import 'package:cargo/Login-page/login_screen.dart';
+import 'package:cargo/Wishlist/booked.dart';
+import 'package:cargo/model/admin_model.dart';
 import 'package:cargo/Wishlist/wishlist.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,26 +26,43 @@ class MyDrawer extends StatefulWidget {
 
 class _MyDrawerState extends State<MyDrawer> {
   User? user = FirebaseAuth.instance.currentUser;
+  dynamic loggedInUser;
+  bool admin = false;
+  bool user_ = false;
+  @override
+  typeuser() async {
+    if (user == null) {
+      return;
+    } else {
+      var id_user = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user?.uid)
+          .get();
+      user_ = id_user.exists;
+      if (user_) loggedInUser = UserModel.fromMap(id_user.data());
 
-  UserModel loggedInUser = UserModel();
+      var id_admin = await FirebaseFirestore.instance
+          .collection("admins")
+          .doc(user?.uid)
+          .get();
+      admin = id_admin.exists;
+      if (admin) loggedInUser = AdminModel.fromMap(id_admin.data());
+      setState(() {});
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
-      setState(() {});
-    });
+    typeuser();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(padding: const EdgeInsets.all(0), children: <Widget>[
-        loggedInUser.uid != null
+        (admin || user_)
             ? UserAccountsDrawerHeader(
                 accountName: Text("${loggedInUser.firstName}"),
                 accountEmail: Text("${loggedInUser.email}"),
@@ -105,7 +124,7 @@ class _MyDrawerState extends State<MyDrawer> {
           height: 10,
         ),
         ListTile(
-          leading: Icon(Icons.car_rental),
+          leading: Icon(Icons.account_box_outlined),
           title: Text("Admin's Corner"),
           trailing: Icon(Icons.arrow_right),
           tileColor: (widget.curr_page == "Admin's Corner") ? grey : white,
@@ -131,6 +150,23 @@ class _MyDrawerState extends State<MyDrawer> {
               : () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => whislist()));
+
+                },
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        ListTile(
+          leading: Icon(Icons.car_rental),
+          title: Text("Booked Car"),
+          trailing: Icon(Icons.arrow_right),
+          tileColor: (widget.curr_page == "Booked Car") ? grey : white,
+          onTap: (widget.curr_page == "Booked Car")
+              ? () {}
+              : () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => booked()));
+
                 },
         ),
         SizedBox(

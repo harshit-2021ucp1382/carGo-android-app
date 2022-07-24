@@ -48,9 +48,15 @@ class _carDetailsState extends State<carDetails> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Image.network(
-                    widget.data.image.toString(),
-                    width: double.infinity,
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: NetworkImage(data.image.toString()),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -103,7 +109,7 @@ class _carDetailsState extends State<carDetails> {
                           .doc(data.carID)
                           .set(data.toJson());
                     else {
-                      Fluttertoast.showToast(msg: ("Not logged in"));
+                      Fluttertoast.showToast(msg: ("Not logged in as User"));
                     }
                   },
                   child: Text(
