@@ -1,5 +1,6 @@
 import 'package:cargo/Admin-Corner/adminCorner.dart';
 import 'package:cargo/Admin-Corner/admin_registration_screen.dart';
+import 'package:cargo/Home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,8 +16,8 @@ class AdminLoginPage extends StatefulWidget {
 
 class _AdminLoginPageState extends State<AdminLoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = new TextEditingController();
-  final TextEditingController _passwordController = new TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _auth = FirebaseAuth.instance;
 
   // string for displaying the error Message
@@ -35,7 +36,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             style: TextStyle(color: Color.fromARGB(179, 33, 24, 188)),
             textAlign: TextAlign.right,
           ),
-          onPressed: () => Navigator.push(context,
+          onPressed: () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => AdminResetPwd())),
         ),
       );
@@ -120,6 +121,13 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
         elevation: 0,
         title: const Text("Admin LoginPage"),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: (() {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          }),
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(

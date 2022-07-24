@@ -157,7 +157,8 @@ class _MyDarwerState extends State<MyDarwer> {
           title: Text("Logout"),
           trailing: Icon(Icons.arrow_left_rounded),
           onTap: () {
-            Navigator.push(context,
+            FirebaseAuth.instance.signOut();
+            Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => AdminLoginPage()));
           },
         ),
