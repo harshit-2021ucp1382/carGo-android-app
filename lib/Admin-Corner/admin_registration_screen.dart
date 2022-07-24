@@ -332,13 +332,13 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
 
     await firebaseFirestore
         .collection("admins")
-        .doc(admin.uid)
+        .doc(adminModel.adid)
         .set(adminModel.toMap());
     Fluttertoast.showToast(msg: "Account created successfully :) ");
 
     Navigator.pushAndRemoveUntil(
         (context),
-        MaterialPageRoute(builder: (context) => adminCorner()),
+        MaterialPageRoute(builder: (context) => AdminCorner()),
         (route) => false);
   }
 }
