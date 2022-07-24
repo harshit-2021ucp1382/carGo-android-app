@@ -107,7 +107,13 @@ class _MyCardState extends State<MyCard> {
                             SizedBox(
                               width: 5,
                             ),
-                            Icon(Icons.arrow_forward_sharp),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HomeScreen()));
+                                },
+                                icon: Icon(Icons.forward))
                           ],
                         ),
                       )),
