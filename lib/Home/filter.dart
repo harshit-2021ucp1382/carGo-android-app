@@ -26,7 +26,7 @@ class FilterScreenState extends State<FilterScreen> {
   bool isPrice = false;
   bool isRating = false;
   bool isLatest = false;
-  bool isOld = false;
+  bool isLoc = false;
   bool isFilter = false;
   List<String> selected = List.empty(growable: true);
   List<Seats> filter_three = [
@@ -36,10 +36,10 @@ class FilterScreenState extends State<FilterScreen> {
     Seats("S4", "8", false),
   ];
   List<Ratings> filter_rating = [
-    Ratings("R1", "1 Star", false),
-    Ratings("R2", "2 Star", false),
-    Ratings("R3", "3 Star", false),
-    Ratings("R4", "4 Star", false),
+    Ratings("R1", "1", false),
+    Ratings("R2", "2", false),
+    Ratings("R3", "3", false),
+    Ratings("R4", "4", false),
   ];
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class FilterScreenState extends State<FilterScreen> {
                   isFilter = false;
                   isPrice = false;
                   isLatest = false;
-                  isOld = false;
+                  isLoc = false;
                   isRating = false;
                 });
               }),
@@ -79,7 +79,7 @@ class FilterScreenState extends State<FilterScreen> {
                     Map<String, dynamic> filters = Map();
                     filters['Price'] = (isPrice) ? 1 : 0;
                     filters['Latest'] = (isLatest) ? 1 : 0;
-                    filters['Oldest'] = (isOld) ? 1 : 0;
+                    filters['Location'] = (isLoc) ? 1 : 0;
                     filters['Ratings'] = (isRating) ? 1 : 0;
                     filters['cat'] = (selected);
                     Navigator.pop(context, jsonEncode(filters));
@@ -129,13 +129,13 @@ class FilterScreenState extends State<FilterScreen> {
                     ]),
                     Row(children: [
                       Checkbox(
-                          value: isOld,
+                          value: isLoc,
                           onChanged: (value) {
                             setState(() {
-                              isOld = value!;
+                              isLoc = value!;
                             });
                           }),
-                      Text("Oldest",
+                      Text("Location",
                           style: TextStyle(color: Colors.deepPurple)),
                     ]),
                     SizedBox(

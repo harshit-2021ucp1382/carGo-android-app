@@ -13,7 +13,7 @@ Future<void> main() async {
     theme: ThemeData(
       primarySwatch: blue,
     ),
-    home: const AdminCorner(),
+    home: const HomeScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }

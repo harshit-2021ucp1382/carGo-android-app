@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import '../model/admin_model.dart';
 import '../reusable/drawer.dart';
 
 class AdminCorner extends StatefulWidget {
@@ -19,7 +20,7 @@ class AdminCorner extends StatefulWidget {
   State<AdminCorner> createState() => _AdminCornerState();
 }
 
-class _adminCornerState extends State<adminCorner> {
+class _AdminCornerState extends State<AdminCorner> {
   User? admin = FirebaseAuth.instance.currentUser;
   AdminModel loggedInAdmin = AdminModel();
   cardData card = cardData();
@@ -33,8 +34,6 @@ class _adminCornerState extends State<adminCorner> {
         .doc(admin?.uid)
         .get();
     logged_admin = info.exists;
-    print("777777777777777777");
-    print(admin?.uid);
   }
 
   Future getCars() async {

@@ -40,7 +40,7 @@ class _AddCarState extends State<AddCar> {
       setState(() {});
     });
   }
-  
+
   late String carId;
   PlatformFile? _coverfile;
   PlatformFile? _insurance;
@@ -353,7 +353,7 @@ class _AddCarState extends State<AddCar> {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () async {
-                      added = addDB() as bool;
+                      added = await addDB();
                       (added)
                           ? showDialog(
                               context: context,
