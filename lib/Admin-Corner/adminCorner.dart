@@ -68,8 +68,8 @@ class _AdminCornerState extends State<AdminCorner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Admin's Corner")),
-      drawer: const MyDarwer(
-        curr_page: "Admin's Corner",
+      drawer: MyDrawer(
+        currPage: "Admin's Corner",
       ),
       body: (logged_admin)
           ? Container(
