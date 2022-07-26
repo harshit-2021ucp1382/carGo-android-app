@@ -4,6 +4,7 @@ import 'package:cargo/reusable/card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../reusable/color.dart';
 import '../reusable/drawer.dart';
 
 class booked extends StatefulWidget {
@@ -17,6 +18,7 @@ class _bookedState extends State<booked> {
   User? user = FirebaseAuth.instance.currentUser;
   String uid = "";
   late cardData data;
+  final formKey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -75,8 +77,36 @@ class _bookedState extends State<booked> {
                         children: <Widget>[
                           const Text("Rate the car :"),
                           const SizedBox(width: 10),
-                          TextFormField(
-                            controller: _ratingController,
+                          SingleChildScrollView(
+                            child: Form(
+                              key: formKey,
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 25,
+                                        width: 20,
+                                        child: TextFormField(
+                                          controller: _ratingController,
+                                          decoration: InputDecoration(
+                                            hintText: ".",
+                                            hintStyle: TextStyle(
+                                              color: grey,
+                                            ),
+                                          ),
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                                  signed: false,
+                                                  decimal: false),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                           const Text("/5"),
                           SizedBox(width: 10),

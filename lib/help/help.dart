@@ -19,7 +19,6 @@ class _helpState extends State<help> {
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
-            backgroundColor: Colors.transparent,
             appBar: AppBar(
               centerTitle: true,
               title: Text(
