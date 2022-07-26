@@ -66,8 +66,8 @@ class _AdminCornerState extends State<AdminCorner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Admin's Corner")),
-      drawer: const MyDarwer(
-        curr_page: "Admin's Corner",
+      drawer: MyDrawer(
+        currPage: "Admin's Corner",
       ),
       body: (logged_admin)
           ? Container(
@@ -77,6 +77,7 @@ class _AdminCornerState extends State<AdminCorner> {
               child: Center(
                 child: SafeArea(
                     child: ListView.builder(
+                        scrollDirection: Axis.vertical,
                         itemCount: _admincars.length,
                         itemBuilder: (BuildContext context, int index) {
                           return MyCard(data: _admincars[index] as cardData);

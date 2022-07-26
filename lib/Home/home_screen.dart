@@ -8,15 +8,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_place/google_place.dart';
 import '../Login-page/login_screen.dart';
-import '../reusable/drawer2.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
+}
+
+Future<Position> _determinePosition() async {
+  bool serviceEnabled;
+  LocationPermission permission;
+  serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  if (!serviceEnabled) {
+    return Future.error('Location services are disabled.');
+  }
+
+  permission = await Geolocator.checkPermission();
+  if (permission == LocationPermission.denied) {
+    permission = await Geolocator.requestPermission();
+    if (permission == LocationPermission.denied) {
+      return Future.error('Location permissions are denied');
+    }
+  }
+
+  if (permission == LocationPermission.deniedForever) {
+    return Future.error(
+        'Location permissions are permanently denied, we cannot request permissions.');
+  }
+  return await Geolocator.getCurrentPosition();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -89,6 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getCars("none");
+    var Position = _determinePosition();
     FirebaseFirestore.instance
         .collection("users")
         .doc(user?.uid)
@@ -143,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: const Icon(Icons.sort))
               ],
             ),
-            drawer: MyDrawer(curr_page: "Home"),
+            drawer: MyDrawer(currPage: "Home"),
             body: SafeArea(
                 child: new ListView.builder(
                     key: UniqueKey(),

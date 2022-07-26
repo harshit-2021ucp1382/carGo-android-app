@@ -9,7 +9,7 @@ class contactUs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Conatct Us")),
-      drawer: MyDarwer(curr_page: "Contact Us"),
+      drawer: MyDrawer(currPage: "Contact Us"),
     );
   }
 }

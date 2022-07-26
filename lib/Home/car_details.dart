@@ -1,3 +1,4 @@
+import 'package:cargo/Home/congra.dart';
 import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -101,14 +102,16 @@ class _carDetailsState extends State<carDetails> {
                   padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                   minWidth: MediaQuery.of(context).size.width,
                   onPressed: () async {
-                    if (logged)
+                    if (logged) {
                       await FirebaseFirestore.instance
                           .collection("users")
                           .doc(user?.uid)
                           .collection("booked")
                           .doc(data.carID)
                           .set(data.toJson());
-                    else {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Congo()));
+                    } else {
                       Fluttertoast.showToast(msg: ("Not logged in as User"));
                     }
                   },
