@@ -32,8 +32,8 @@ class _chatLobbyState extends State<chatLobby> {
 
   @override
   getChats() async {
+    print(widget.currId[1]);
     print(widget.currId[0]);
-    print(widget.toid[0]);
     var data = await FirebaseFirestore.instance
         .collection(widget.currId[1])
         .doc(widget.currId[0])
@@ -146,59 +146,61 @@ class _chatLobbyState extends State<chatLobby> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("Chat Room")),
-        drawer: const MyDarwer(
-          curr_page: "Chat Lobby",
-        ),
-        body: Column(
-          children: <Widget>[
-            Text(
-              toName,
-              style: TextStyle(fontSize: 20, color: grey),
-            ),
-            SafeArea(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    key: UniqueKey(),
-                    itemCount: chats.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        decoration: BoxDecoration(
-                            color: chats[index].from == widget.currId[0]
-                                ? grey
-                                : Color.fromARGB(255, 105, 126, 136)),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: Align(
-                          alignment: chats[index].from == widget.currId[0]
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
-                          child: Container(
-                              child: Text(
-                            chats[index].content.toString(),
-                            style: TextStyle(fontSize: 20),
-                          )),
-                        ),
-                      );
-                    })),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: _send,
-                    decoration: InputDecoration(hintText: "Send text"),
+        drawer: const MyDrawer(currPage: "Chat Lobby"),
+        body: Center(
+            child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Text(
+                toName,
+                style: TextStyle(fontSize: 20, color: grey),
+              ),
+              SafeArea(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      key: UniqueKey(),
+                      itemCount: chats.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          width: 80,
+                          decoration: BoxDecoration(
+                              color: chats[index].from == widget.currId[0]
+                                  ? grey
+                                  : Color.fromARGB(255, 105, 126, 136)),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Align(
+                            alignment: chats[index].from == widget.currId[0]
+                                ? Alignment.centerLeft
+                                : Alignment.centerRight,
+                            child: Container(
+                                child: Text(
+                              chats[index].content.toString(),
+                              style: TextStyle(fontSize: 20),
+                            )),
+                          ),
+                        );
+                      })),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: TextField(
+                      controller: _send,
+                      decoration: InputDecoration(hintText: "Send text"),
+                    ),
                   ),
-                ),
-                IconButton(
-                    onPressed: () async {
-                      if (_send.text != null) {
-                        sendChat(_send.text);
-                      }
-                    },
-                    icon: Icon(Icons.send))
-              ],
-            ),
-          ],
-        ));
+                  IconButton(
+                      onPressed: () async {
+                        if (_send.text != null) {
+                          sendChat(_send.text);
+                        }
+                      },
+                      icon: Icon(Icons.send))
+                ],
+              ),
+            ],
+          ),
+        )));
     ;
   }
 }

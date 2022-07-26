@@ -64,10 +64,8 @@ class cardData {
         'Rating': Rating,
         'insurance': insurance,
         'type': type,
-
-        'location': location
+        'location': location,
         'users': users,
-
       };
 
   cardData.datastore(snapshot)
@@ -87,5 +85,4 @@ class cardData {
         type = snapshot.data()['type'],
         location = snapshot.data()['location'],
         users = snapshot.data()['users'];
-
 }

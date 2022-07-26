@@ -2,6 +2,7 @@ import 'package:cargo/chat/chatlobby.dart';
 import 'package:cargo/model/admin_model.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class chatCard extends StatefulWidget {
@@ -16,7 +17,7 @@ class chatCard extends StatefulWidget {
 
 class _chatCardState extends State<chatCard> {
   dynamic user;
-  late String currid;
+  String currid = FirebaseAuth.instance.currentUser!.uid.toString();
   String toid = '';
   String toUser = '';
   @override
@@ -55,7 +56,6 @@ class _chatCardState extends State<chatCard> {
 
   @override
   void initState() {
-    currid = widget.data;
     print(widget.data);
     getUserModel();
 

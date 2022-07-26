@@ -112,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     getCars("none");
-    var Position = _determinePosition();
+    //var Position = _determinePosition();
     FirebaseFirestore.instance
         .collection("users")
         .doc(user?.uid)
