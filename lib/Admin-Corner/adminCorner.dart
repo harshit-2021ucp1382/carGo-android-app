@@ -34,8 +34,6 @@ class _AdminCornerState extends State<AdminCorner> {
         .doc(admin?.uid)
         .get();
     logged_admin = info.exists;
-    print("777777777777777777");
-    print(admin?.uid);
   }
 
   Future getCars() async {

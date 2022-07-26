@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:cargo/Home/filter.dart';
 import 'package:cargo/Home/search.dart';
 import 'package:cargo/reusable/card.dart';
@@ -46,17 +47,71 @@ class _HomeScreenState extends State<HomeScreen> {
   UserModel loggedInUser = UserModel();
   cardData card = cardData();
   List<Object> _cars = [];
-  Future getCars() async {
-    var data = await FirebaseFirestore.instance.collection("cars").get();
-    setState(() {
-      _cars = List.from(data.docs.map((doc) => cardData.datastore(doc)));
-    });
+  String currLoc = "DELHI";
+  List seats = [];
+  List filter_rating = [];
+  int _filterloc = 0;
+  int _filterPrice = 0;
+  Future getCars(String filter) async {
+    var data;
+    if (filter == "none") {
+      data = await FirebaseFirestore.instance
+          .collection("cars")
+          .orderBy("Price")
+          .get();
+      setState(() {
+        _cars = List.from(data.docs.map((doc) => cardData.datastore(doc)));
+      });
+    } else {
+      _cars = [];
+      print("9999999");
+      print(seats);
+
+      if (seats.isEmpty) seats = ['1', '2', '3', '4', '5', '6', '7', '8'];
+      if (filter_rating.isEmpty) filter_rating = ['0', '1', '2', '3', '4', '5'];
+      if (_filterPrice == 1) {
+        data = await FirebaseFirestore.instance
+            .collection("cars")
+            .orderBy("Price")
+            .get();
+      } else {
+        data = await FirebaseFirestore.instance.collection("cars").get();
+      }
+      List<Object> _cars1 = [];
+      _cars1 = List.from(data.docs.map((doc) => cardData.datastore(doc)));
+      if (filter_rating.length > 0) {
+        for (int i = 0; i < _cars1.length; i++) {
+          if (filter_rating.contains((_cars1[i] as cardData).Rating)) {
+            _cars.add(_cars1[i]);
+          }
+        }
+      }
+      _cars1 = [];
+      if (seats.length > 0 && _cars.length > 0) {
+        for (int i = 0; i < _cars.length; i++) {
+          if (seats.contains((_cars[i] as cardData).seats)) {
+            _cars1.add(_cars[i]);
+          }
+        }
+      }
+      _cars = _cars1;
+      if (currLoc != null && _filterloc == 1) {
+        _cars = [];
+
+        for (int i = 0; i < _cars1.length; i++) {
+          if ((_cars1[i] as cardData).location == currLoc) {
+            _cars.add(_cars1[i]);
+          }
+        }
+      }
+      setState(() {});
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    getCars();
+    getCars("none");
     var Position = _determinePosition();
     FirebaseFirestore.instance
         .collection("users")
@@ -69,12 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final _controller = TextEditingController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,14 +143,34 @@ class _HomeScreenState extends State<HomeScreen> {
                           MaterialPageRoute(builder: (ctx) {
                         return FilterScreen();
                       }));
-                      print(result);
+                      try {
+                        var info = jsonDecode(result);
+                        _filterPrice = info['Price'];
+                        _filterloc = info['Location'];
+                        seats = [];
+                        filter_rating = [];
+                        if (info['cat'].length > 0) {
+                          for (int i = 0; i < info['cat'].length; i += 2) {
+                            if (info['cat'][i][0] == 'R')
+                              filter_rating.add(info['cat'][i + 1]);
+                            if (info['cat'][i][0] == 'S')
+                              seats.add(info['cat'][i + 1]);
+                          }
+                        }
+                        getCars("filter");
+                      } catch (e) {
+                        print(e);
+                      }
+
+                      setState(() {});
                     },
                     icon: const Icon(Icons.sort))
               ],
             ),
             drawer: MyDrawer(currPage: "Home"),
             body: SafeArea(
-                child: ListView.builder(
+                child: new ListView.builder(
+                    key: UniqueKey(),
                     itemCount: _cars.length,
                     itemBuilder: (BuildContext context, int index) {
                       return MyCard(data: _cars[index] as cardData);

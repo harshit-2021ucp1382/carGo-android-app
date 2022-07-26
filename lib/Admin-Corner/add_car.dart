@@ -377,6 +377,7 @@ class _AddCarState extends State<AddCar> {
                       addDB();
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => Congo()));
+
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

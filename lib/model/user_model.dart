@@ -1,4 +1,5 @@
 import 'package:cargo/Home/filter.dart';
+import 'package:flutter/cupertino.dart';
 
 class UserModel {
   String? uid;
@@ -45,6 +46,7 @@ class cardData {
   String? insurance;
   String? users;
   String? type;
+  String? location;
 
   cardData();
   Map<String, dynamic> toJson() => {
@@ -62,7 +64,10 @@ class cardData {
         'Rating': Rating,
         'insurance': insurance,
         'type': type,
+
+        'location': location
         'users': users,
+
       };
 
   cardData.datastore(snapshot)
@@ -80,5 +85,7 @@ class cardData {
         Rating = snapshot.data()['Rating'],
         insurance = snapshot.data()['insurance'],
         type = snapshot.data()['type'],
+        location = snapshot.data()['location'],
         users = snapshot.data()['users'];
+
 }
