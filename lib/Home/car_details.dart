@@ -1,4 +1,5 @@
 import 'package:cargo/Login-page/login_screen.dart';
+import 'package:cargo/chat/chatlobby.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -93,6 +94,31 @@ class _carDetailsState extends State<carDetails> {
                 ],
               ),
             ),
+            IconButton(
+                onPressed: () async {
+                  if (logged) {
+                    await FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(user?.uid)
+                        .collection("booked")
+                        .doc(data.carID)
+                        .set(data.toJson());
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => chatLobby(
+                                  currId: [user?.uid.toString(), "users"],
+                                  toid: [data.adid, "admins"],
+                                  carModel: data.carModel.toString(),
+                                )));
+                  } else {
+                    Fluttertoast.showToast(msg: ("Not logged in as User"));
+                  }
+                },
+                icon: Icon(
+                  Icons.chat,
+                  size: 40,
+                )),
             Material(
               elevation: 5,
               borderRadius: BorderRadius.circular(30),

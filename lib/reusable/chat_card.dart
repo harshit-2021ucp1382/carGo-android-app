@@ -16,12 +16,11 @@ class chatCard extends StatefulWidget {
 
 class _chatCardState extends State<chatCard> {
   dynamic user;
+  late String currid;
   String toid = '';
-  String currid = 'hgCXgdi0ZvhWrijQrA10Kw9IVvs2';
   String toUser = '';
   @override
   getUserModel() async {
-    print("888888888");
     print(widget.data);
     print(widget.type);
     if (widget.type == "admins") {
@@ -56,7 +55,7 @@ class _chatCardState extends State<chatCard> {
 
   @override
   void initState() {
-    print("888888888");
+    currid = widget.data;
     print(widget.data);
     getUserModel();
 
@@ -76,6 +75,7 @@ class _chatCardState extends State<chatCard> {
                     builder: (context) => chatLobby(
                           currId: [currid, widget.type],
                           toid: [widget.data, toUser],
+                          carModel: "false",
                         )));
           },
           icon: Icon(

@@ -14,7 +14,7 @@ Future<void> main() async {
     theme: ThemeData(
       primarySwatch: blue,
     ),
-    home: chatroom(id: "2Cl9KUi9EPbTmpLmowvId8wr26w2", typeuser: "users"),
+    home: HomeScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }
