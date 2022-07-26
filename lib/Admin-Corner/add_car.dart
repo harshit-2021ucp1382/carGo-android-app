@@ -23,6 +23,7 @@ class _AddCarState extends State<AddCar> {
   final _seatsController = TextEditingController();
   final _distController = TextEditingController();
   final _priceController = TextEditingController();
+  final _typecontroller = TextEditingController();
 
   String adid = FirebaseAuth.instance.currentUser!.uid;
   final _typeController = TextEditingController();
@@ -36,11 +37,11 @@ class _AddCarState extends State<AddCar> {
         .doc(loggedInAdmin.adid)
         .get()
         .then((value) {
-      this.loggedInAdmin = AdminModel.fromMap(value.data());
+      loggedInAdmin = AdminModel.fromMap(value.data());
       setState(() {});
     });
   }
-  
+
   late String carId;
   PlatformFile? _coverfile;
   PlatformFile? _insurance;
@@ -115,12 +116,16 @@ class _AddCarState extends State<AddCar> {
       await FirebaseFirestore.instance
           .collection("cars")
           .add(car.toJson())
-          .then((value) {
-        carId = value.id;
-      });
+          .then(
+        (value) {
+          carId = value.id;
+        },
+      );
       car.carID = carId;
       car.Rating = "0 Stars";
       car.Price = _priceController.text;
+      car.users = '0';
+      car.type = _typeController.text;
 
       car.image = await upload("cars_data/$carId/cover", _coverfile, "image");
       car.puc = await upload("cars_data/$carId/puc", _puc, "puc");
@@ -232,12 +237,27 @@ class _AddCarState extends State<AddCar> {
                       hintStyle: TextStyle(
                         color: grey,
                       ),
-                      labelText: "Price",
+                      labelText: "Price per hour",
                       labelStyle: const TextStyle(
                         color: Colors.black,
                       ),
                     ),
                     keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: _typeController,
+                    decoration: InputDecoration(
+                      hintText: "Petrol/Deisel/CNG/Electric",
+                      hintStyle: TextStyle(
+                        color: grey,
+                      ),
+                      labelText: "Type of Fuel",
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -357,13 +377,33 @@ class _AddCarState extends State<AddCar> {
                       (added)
                           ? showDialog(
                               context: context,
-                              builder: (BuildContext context) =>
-                                  _success(context),
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text("Success"),
+                                content: const Text(
+                                    "Your car was successfully added to our database"),
+                                actions: <Widget>[
+                                  OutlinedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("OK"))
+                                ],
+                              ),
                             )
                           : showDialog(
                               context: context,
-                              builder: (BuildContext context) =>
-                                  _failure(context),
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text("Failure"),
+                                content: const Text(
+                                    "We encountered some error.Please try again"),
+                                actions: <Widget>[
+                                  OutlinedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("OK"))
+                                ],
+                              ),
                             );
                       Navigator.pop(context);
                     },
@@ -385,32 +425,4 @@ class _AddCarState extends State<AddCar> {
       ),
     );
   }
-}
-
-Widget _success(BuildContext context) {
-  return AlertDialog(
-    title: const Text("Success"),
-    content: const Text("Your car was successfully added to our database"),
-    actions: <Widget>[
-      ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text("OK"))
-    ],
-  );
-}
-
-Widget _failure(BuildContext context) {
-  return AlertDialog(
-    title: const Text("Failure"),
-    content: const Text("We encountered some error.Please try again"),
-    actions: <Widget>[
-      ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text("OK"))
-    ],
-  );
 }

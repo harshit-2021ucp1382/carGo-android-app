@@ -1,9 +1,9 @@
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/card.dart';
+import 'package:cargo/reusable/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../reusable/drawer2.dart';
 
 class whislist extends StatefulWidget {
   whislist({Key? key}) : super(key: key);
@@ -41,7 +41,7 @@ class _whislistState extends State<whislist> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Your Wishlist")),
-      drawer: MyDrawer(curr_page: "Your Wishlist"),
+      drawer: MyDrawer(currPage: "Your Wishlist"),
       body: SafeArea(
           child: ListView.builder(
               itemCount: _whislistcars.length,

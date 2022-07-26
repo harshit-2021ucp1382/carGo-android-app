@@ -14,7 +14,7 @@ Future<void> main() async {
     theme: ThemeData(
       primarySwatch: blue,
     ),
-    home: HomeScreen(),
+    home: const HomeScreen(),
     debugShowCheckedModeBanner: false,
   ));
 }

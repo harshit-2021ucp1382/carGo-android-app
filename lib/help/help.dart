@@ -19,7 +19,6 @@ class _helpState extends State<help> {
   Widget build(BuildContext context) {
     return Container(
         child: Scaffold(
-            backgroundColor: Colors.transparent,
             appBar: AppBar(
               centerTitle: true,
               title: Text(
@@ -29,7 +28,7 @@ class _helpState extends State<help> {
               backgroundColor: blue,
               automaticallyImplyLeading: true,
             ),
-            drawer: MyDarwer(curr_page: "Contact Us"),
+            drawer: MyDrawer(currPage: "Contact Us"),
             body: SingleChildScrollView(
                 child: Column(children: <Widget>[
               Stack(alignment: Alignment.center, children: <Widget>[
