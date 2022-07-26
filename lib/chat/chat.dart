@@ -22,6 +22,9 @@ class _chatroomState extends State<chatroom> {
   dynamic documents;
 
   getMarker() async {
+    print("88888888888888");
+    print(widget.typeuser);
+    print(widget.id);
     if (widget.typeuser != null) {
       var snapshot = await FirebaseFirestore.instance
           .collection(widget.typeuser)
@@ -49,8 +52,8 @@ class _chatroomState extends State<chatroom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Chat Room")),
-      drawer: const MyDarwer(
-        curr_page: "Chat Room",
+      drawer: const MyDrawer(
+        currPage: "Chat",
       ),
       body: documents != null
           ? SafeArea(

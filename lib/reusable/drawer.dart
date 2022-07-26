@@ -1,6 +1,8 @@
 import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/Wishlist/booked.dart';
+import 'package:cargo/chat/chat.dart';
+import 'package:cargo/chat/chatlobby.dart';
 import 'package:cargo/model/admin_model.dart';
 import 'package:cargo/Wishlist/wishlist.dart';
 import 'package:cargo/model/user_model.dart';
@@ -200,6 +202,28 @@ class _MyDrawerState extends State<MyDrawer> {
             : SizedBox(
                 height: 0,
               ),
+        (admin || user_)
+            ? ListTile(
+                leading: Icon(Icons.headphones),
+                title: Text("Chat"),
+                trailing: Icon(Icons.arrow_right),
+                tileColor: (widget.currPage == "Chat") ? grey : white,
+                onTap: (widget.currPage == "Chat")
+                    ? () {}
+                    : () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => chatroom(
+                                      id: user!.uid.toString(),
+                                      typeuser: admin ? "admins" : "users",
+                                    )));
+                      },
+              )
+            : Container(),
+        SizedBox(
+          height: 10,
+        ),
         ListTile(
           leading: Icon(Icons.headphones),
           title: Text("Contact Us"),
