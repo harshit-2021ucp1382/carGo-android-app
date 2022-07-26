@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cargo/Admin-Corner/congratulation.dart';
 import 'package:cargo/model/admin_model.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/color.dart';
@@ -373,39 +374,9 @@ class _AddCarState extends State<AddCar> {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () async {
-                      added = addDB() as bool;
-                      (added)
-                          ? showDialog(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text("Success"),
-                                content: const Text(
-                                    "Your car was successfully added to our database"),
-                                actions: <Widget>[
-                                  OutlinedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("OK"))
-                                ],
-                              ),
-                            )
-                          : showDialog(
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                title: const Text("Failure"),
-                                content: const Text(
-                                    "We encountered some error.Please try again"),
-                                actions: <Widget>[
-                                  OutlinedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: const Text("OK"))
-                                ],
-                              ),
-                            );
-                      Navigator.pop(context);
+                      addDB();
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Congo()));
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

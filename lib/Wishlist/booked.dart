@@ -90,12 +90,6 @@ class _bookedState extends State<booked> {
                                         width: 20,
                                         child: TextFormField(
                                           controller: _ratingController,
-                                          decoration: InputDecoration(
-                                            hintText: ".",
-                                            hintStyle: TextStyle(
-                                              color: grey,
-                                            ),
-                                          ),
                                           keyboardType:
                                               TextInputType.numberWithOptions(
                                                   signed: false,
