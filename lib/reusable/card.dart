@@ -1,12 +1,8 @@
 import 'package:cargo/Home/car_details.dart';
-import 'package:cargo/Home/home_screen.dart';
-import 'package:cargo/Wishlist/wishlist.dart';
 import 'package:cargo/model/user_model.dart';
-import 'package:cargo/reusable/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -61,36 +57,46 @@ class _MyCardState extends State<MyCard> {
                   ),
                   IconButton(
                       onPressed: () async {
-                        try {
-                          var exist = await FirebaseFirestore.instance
-                              .collection("users")
-                              .doc(uid)
-                              .collection("whislist")
-                              .doc(data.carID)
-                              .get();
-                          if (!exist.exists) {
-                            await FirebaseFirestore.instance
+                        var user = await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(uid)
+                            .get();
+                        if (user.exists) {
+                          try {
+                            var exist = await FirebaseFirestore.instance
                                 .collection("users")
                                 .doc(uid)
                                 .collection("whislist")
                                 .doc(data.carID)
-                                .update(data.toJson());
+                                .get();
+                            if (!exist.exists) {
+                              await FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(uid)
+                                  .collection("whislist")
+                                  .doc(data.carID)
+                                  .set(data.toJson());
+                              Fluttertoast.showToast(
+                                  msg: "Car Added to Whislist");
+                              bookmar = Icon(Icons.bookmark);
+                            } else {
+                              await FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(uid)
+                                  .collection("whislist")
+                                  .doc(data.carID)
+                                  .delete();
+                              Fluttertoast.showToast(
+                                  msg: "Car Removed From Whislist");
+                              bookmar = Icon(Icons.bookmark_add_outlined);
+                            }
+                            if (mounted) setState(() {});
+                          } catch (e) {
                             Fluttertoast.showToast(
-                                msg: "Car Added to Whislist");
-                            bookmar = Icon(Icons.bookmark);
-                          } else {
-                            await FirebaseFirestore.instance
-                                .collection("users")
-                                .doc(uid)
-                                .collection("whislist")
-                                .doc(data.carID)
-                                .delete();
-                            Fluttertoast.showToast(
-                                msg: "Car Removed From Whislist");
-                            bookmar = Icon(Icons.bookmark_add_outlined);
+                                msg: "Not logged in as User");
+                            setState(() {});
                           }
-                          setState(() {});
-                        } catch (e) {
+                        } else {
                           Fluttertoast.showToast(msg: "Not logged in as User");
                           setState(() {});
                         }

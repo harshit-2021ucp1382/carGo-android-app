@@ -1,12 +1,10 @@
 import 'package:cargo/Admin-Corner/add_car.dart';
 import 'package:cargo/Admin-Corner/admin_login_screen.dart';
-import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/card.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../model/admin_model.dart';
 import '../reusable/drawer.dart';
@@ -36,6 +34,19 @@ class _AdminCornerState extends State<AdminCorner> {
     logged_admin = info.exists;
   }
 
+  @override
+  listner3() async {
+    FirebaseFirestore.instance
+        .collection("admins")
+        .doc(admin?.uid)
+        .collection("cars")
+        .snapshots()
+        .listen((event) {
+      getCars();
+      setState(() {});
+    });
+  }
+
   Future getCars() async {
     var data = await FirebaseFirestore.instance
         .collection("admins")
@@ -58,6 +69,7 @@ class _AdminCornerState extends State<AdminCorner> {
         .get()
         .then((value) {
       this.loggedInAdmin = AdminModel.fromMap(value.data());
+      listner3();
       setState(() {});
     });
   }

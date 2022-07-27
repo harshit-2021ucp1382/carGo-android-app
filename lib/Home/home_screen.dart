@@ -9,7 +9,6 @@ import 'package:cargo/model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_place/google_place.dart';
 import '../Login-page/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -64,8 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     } else {
       _cars = [];
-      print("9999999");
-      print(seats);
 
       if (seats.isEmpty) seats = ['1', '2', '3', '4', '5', '6', '7', '8'];
       if (filter_rating.isEmpty) filter_rating = ['0', '1', '2', '3', '4', '5'];
@@ -159,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                         getCars("filter");
                       } catch (e) {
-                        print(e);
+                        ;
                       }
 
                       setState(() {});

@@ -22,27 +22,21 @@ class _chatCardState extends State<chatCard> {
   String toUser = '';
   @override
   getUserModel() async {
-    print(widget.data);
-    print(widget.type);
     if (widget.type == "admins") {
       var data = await FirebaseFirestore.instance
           .collection("users")
           .doc(widget.data)
           .get();
-      print("user card");
       if (data != null) {
         user = UserModel();
         user = UserModel.fromMap(data.data());
       }
-
-      print(user.firstName);
     }
     if (widget.type == "users") {
       var data = await FirebaseFirestore.instance
           .collection("admins")
           .doc(widget.data)
           .get();
-      print("admin card");
       user = AdminModel();
       user = AdminModel.fromMap(data.data());
     }
@@ -50,13 +44,11 @@ class _chatCardState extends State<chatCard> {
       if (widget.type == 'admins') toUser = 'users';
       if (widget.type == 'users') toUser = 'admins';
     }
-
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override
   void initState() {
-    print(widget.data);
     getUserModel();
 
     setState(() {});
@@ -64,26 +56,40 @@ class _chatCardState extends State<chatCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(children: <Widget>[
-        Text("${user?.firstName}"),
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => chatLobby(
-                          currId: [currid, widget.type],
-                          toid: [widget.data, toUser],
-                          carModel: "false",
-                        )));
-          },
-          icon: Icon(
-            Icons.person,
-            size: 40,
+    return InkWell(
+      child: SizedBox(
+        height: 100,
+        width: MediaQuery.of(context).size.width,
+        child: Card(
+          child: Row(
+            children: <Widget>[
+              CircleAvatar(
+                radius: 35,
+                backgroundImage: currid[1] == 'admins'
+                    ? AssetImage("assets/img/AdminAvatar.png")
+                    : AssetImage("assets/img/UserAvatar.png"),
+              ),
+              SizedBox(width: 20),
+              Text(
+                "${user?.firstName}",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ],
           ),
-        )
-      ]),
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => chatLobby(
+                      currId: [currid, widget.type],
+                      toid: [widget.data, toUser],
+                      carModel: "false",
+                    )));
+      },
     );
   }
 }

@@ -1,8 +1,6 @@
-import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/Wishlist/booked.dart';
 import 'package:cargo/chat/chat.dart';
-import 'package:cargo/chat/chatlobby.dart';
 import 'package:cargo/model/admin_model.dart';
 import 'package:cargo/Wishlist/wishlist.dart';
 import 'package:cargo/model/user_model.dart';
@@ -46,7 +44,7 @@ class _MyDrawerState extends State<MyDrawer> {
           .get();
       admin = idAdmin.exists;
       if (admin) loggedInUser = AdminModel.fromMap(idAdmin.data());
-      setState(() {});
+      if (mounted) setState(() {});
     }
   }
 
@@ -249,7 +247,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   Navigator.pop(context, true);
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => AdminLoginPage()),
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
                   );
                 },
               )

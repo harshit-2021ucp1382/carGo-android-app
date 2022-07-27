@@ -25,6 +25,7 @@ class _AddCarState extends State<AddCar> {
   final _distController = TextEditingController();
   final _priceController = TextEditingController();
   final _typecontroller = TextEditingController();
+  final _locationController = TextEditingController();
 
   String adid = FirebaseAuth.instance.currentUser!.uid;
   final _typeController = TextEditingController();
@@ -123,10 +124,11 @@ class _AddCarState extends State<AddCar> {
         },
       );
       car.carID = carId;
-      car.Rating = "0 Stars";
+      car.Rating = "0";
       car.Price = _priceController.text;
       car.users = '0';
       car.type = _typeController.text;
+      car.location = _locationController.text;
 
       car.image = await upload("cars_data/$carId/cover", _coverfile, "image");
       car.puc = await upload("cars_data/$carId/puc", _puc, "puc");
@@ -275,6 +277,21 @@ class _AddCarState extends State<AddCar> {
                     ),
                     keyboardType: TextInputType.number,
                   ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: _locationController,
+                    decoration: InputDecoration(
+                      hintText: "Jaipur",
+                      hintStyle: TextStyle(
+                        color: grey,
+                      ),
+                      labelText: "Location",
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
                   const SizedBox(height: 20),
                   Row(
                     children: <Widget>[
@@ -377,7 +394,6 @@ class _AddCarState extends State<AddCar> {
                       addDB();
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => Congo()));
-
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,

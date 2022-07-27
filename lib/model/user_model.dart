@@ -1,6 +1,3 @@
-import 'package:cargo/Home/filter.dart';
-import 'package:flutter/cupertino.dart';
-
 class UserModel {
   String? uid;
   String? email;

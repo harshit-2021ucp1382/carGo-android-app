@@ -3,8 +3,6 @@ import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import '../reusable/color.dart';
 import '../reusable/drawer.dart';
 
 class booked extends StatefulWidget {
@@ -18,12 +16,26 @@ class _bookedState extends State<booked> {
   User? user = FirebaseAuth.instance.currentUser;
   String uid = "";
   late cardData data;
-  final formKey = GlobalKey<FormState>();
+
+  @override
+  listner2() async {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection("booked")
+        .snapshots()
+        .listen((event) {
+      booked();
+      setState(() {});
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     uid = user!.uid.toString();
     booked();
+    listner2();
     setState(() {});
   }
 
@@ -58,6 +70,12 @@ class _bookedState extends State<booked> {
         .collection("cars")
         .doc(data.carID)
         .update(data.toJson());
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid)
+        .collection("booked")
+        .doc(data.carID)
+        .update(data.toJson());
   }
 
   @override
@@ -67,6 +85,7 @@ class _bookedState extends State<booked> {
       drawer: MyDrawer(currPage: "Booked Cars"),
       body: SafeArea(
           child: ListView.builder(
+              key: UniqueKey(),
               itemCount: _bookedcars.length,
               itemBuilder: (BuildContext context, int index) {
                 return Column(
@@ -79,7 +98,7 @@ class _bookedState extends State<booked> {
                           const SizedBox(width: 10),
                           SingleChildScrollView(
                             child: Form(
-                              key: formKey,
+                              key: UniqueKey(),
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(10.0),

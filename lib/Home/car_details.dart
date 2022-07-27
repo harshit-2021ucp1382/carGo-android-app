@@ -1,12 +1,9 @@
 import 'package:cargo/Home/congra.dart';
-import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/chat/chatlobby.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class carDetails extends StatefulWidget {

@@ -1,4 +1,3 @@
-import 'package:cargo/model/message.dart';
 import 'package:cargo/reusable/chat_card.dart';
 import 'package:cargo/reusable/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,9 +21,6 @@ class _chatroomState extends State<chatroom> {
   dynamic documents;
 
   getMarker() async {
-    print("88888888888888");
-    print(widget.typeuser);
-    print(widget.id);
     if (widget.typeuser != null) {
       var snapshot = await FirebaseFirestore.instance
           .collection(widget.typeuser)
@@ -33,11 +29,6 @@ class _chatroomState extends State<chatroom> {
           .get();
 
       documents = snapshot.docs;
-      print(documents.length);
-      if (documents.length > 0) {
-        print(documents[0].id);
-        print(documents[0].data());
-      }
     }
     setState(() {});
   }

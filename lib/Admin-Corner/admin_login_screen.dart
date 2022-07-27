@@ -123,12 +123,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-
           onPressed: () {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: ((context) => HomeScreen())));
           },
-
         ),
       ),
       body: Center(
@@ -217,7 +215,6 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             errorMessage = "An undefined Error happened.";
         }
         Fluttertoast.showToast(msg: errorMessage!);
-        print(error.code);
       }
     }
   }
