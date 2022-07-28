@@ -123,12 +123,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-
           onPressed: () {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: ((context) => HomeScreen())));
           },
-
         ),
       ),
       body: Center(

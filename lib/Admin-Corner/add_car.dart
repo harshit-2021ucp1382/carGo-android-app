@@ -40,7 +40,7 @@ class _AddCarState extends State<AddCar> {
       setState(() {});
     });
   }
-  
+
   late String carId;
   PlatformFile? _coverfile;
   PlatformFile? _insurance;
