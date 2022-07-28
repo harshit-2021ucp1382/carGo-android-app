@@ -1,4 +1,6 @@
+
 import 'package:cargo/Login-page/google_sign_btn.dart';
+import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import 'package:cargo/Login-page/registration_screen.dart';
 import 'package:cargo/Login-page/reset_pwd.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -125,34 +127,38 @@ class _LoginScreenState extends State<LoginScreen> {
           )),
     );
 
-    return Container(
-        decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-              Color.fromARGB(255, 207, 58, 233),
-              Color.fromARGB(255, 0, 94, 255)
-            ])),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            elevation: 0,
-            title: const Text("LoginPage"),
-            centerTitle: true,
-          ),
-          body: Center(
-            child: SingleChildScrollView(
-              child: Container(
-                color: Colors.white,
-                child: Padding(
-                  padding: const EdgeInsets.all(36.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: const Text("LoginPage"),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(36.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    logoWidget("assets/img/img_567494.png"),
+                    const SizedBox(height: 45),
+                    emailField,
+                    const SizedBox(height: 25),
+                    passwordField,
+                    const SizedBox(height: 05),
+                    forgetpassword(context),
+                    const SizedBox(height: 35),
+                    loginButton,
+                    const SizedBox(height: 15),
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+
                         logoWidget("assets/img/img_567494.png"),
                         const SizedBox(height: 45),
                         emailField,
@@ -190,14 +196,27 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               )
                             ]),
+
                       ],
                     ),
-                  ),
+                    SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AdminLoginPage()));
+                      },
+                      child: Text("Login as Admin"),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   // login function
@@ -236,7 +255,6 @@ class _LoginScreenState extends State<LoginScreen> {
             errorMessage = "An undefined Error happened.";
         }
         Fluttertoast.showToast(msg: errorMessage!);
-        print(error.code);
       }
     }
   }

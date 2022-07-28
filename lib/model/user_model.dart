@@ -1,5 +1,3 @@
-import 'package:cargo/Home/filter.dart';
-
 class UserModel {
   String? uid;
   String? email;
@@ -43,7 +41,10 @@ class cardData {
   String? Price;
   String? Rating;
   String? insurance;
+  String? users;
   String? type;
+  String? location;
+
   cardData();
   Map<String, dynamic> toJson() => {
         'adid': adid,
@@ -59,7 +60,9 @@ class cardData {
         "Price": Price,
         'Rating': Rating,
         'insurance': insurance,
-        'type': type
+        'type': type,
+        'location': location,
+        'users': users,
       };
 
   cardData.datastore(snapshot)
@@ -76,5 +79,7 @@ class cardData {
         Price = snapshot.data()['Price'],
         Rating = snapshot.data()['Rating'],
         insurance = snapshot.data()['insurance'],
-        type = snapshot.data()['type'];
+        type = snapshot.data()['type'],
+        location = snapshot.data()['location'],
+        users = snapshot.data()['users'];
 }

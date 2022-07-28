@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cargo/Admin-Corner/congratulation.dart';
 import 'package:cargo/model/admin_model.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/color.dart';
@@ -23,6 +24,8 @@ class _AddCarState extends State<AddCar> {
   final _seatsController = TextEditingController();
   final _distController = TextEditingController();
   final _priceController = TextEditingController();
+  final _typecontroller = TextEditingController();
+  final _locationController = TextEditingController();
 
   String adid = FirebaseAuth.instance.currentUser!.uid;
   final _typeController = TextEditingController();
@@ -36,7 +39,7 @@ class _AddCarState extends State<AddCar> {
         .doc(loggedInAdmin.adid)
         .get()
         .then((value) {
-      this.loggedInAdmin = AdminModel.fromMap(value.data());
+      loggedInAdmin = AdminModel.fromMap(value.data());
       setState(() {});
     });
   }
@@ -115,12 +118,17 @@ class _AddCarState extends State<AddCar> {
       await FirebaseFirestore.instance
           .collection("cars")
           .add(car.toJson())
-          .then((value) {
-        carId = value.id;
-      });
+          .then(
+        (value) {
+          carId = value.id;
+        },
+      );
       car.carID = carId;
-      car.Rating = "0 Stars";
+      car.Rating = "0";
       car.Price = _priceController.text;
+      car.users = '0';
+      car.type = _typeController.text;
+      car.location = _locationController.text;
 
       car.image = await upload("cars_data/$carId/cover", _coverfile, "image");
       car.puc = await upload("cars_data/$carId/puc", _puc, "puc");
@@ -232,12 +240,27 @@ class _AddCarState extends State<AddCar> {
                       hintStyle: TextStyle(
                         color: grey,
                       ),
-                      labelText: "Price",
+                      labelText: "Price per hour",
                       labelStyle: const TextStyle(
                         color: Colors.black,
                       ),
                     ),
                     keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: _typeController,
+                    decoration: InputDecoration(
+                      hintText: "Petrol/Deisel/CNG/Electric",
+                      hintStyle: TextStyle(
+                        color: grey,
+                      ),
+                      labelText: "Type of Fuel",
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
@@ -253,6 +276,21 @@ class _AddCarState extends State<AddCar> {
                       ),
                     ),
                     keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: _locationController,
+                    decoration: InputDecoration(
+                      hintText: "Jaipur",
+                      hintStyle: TextStyle(
+                        color: grey,
+                      ),
+                      labelText: "Location",
+                      labelStyle: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                    keyboardType: TextInputType.text,
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -353,19 +391,9 @@ class _AddCarState extends State<AddCar> {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () async {
-                      added = addDB() as bool;
-                      (added)
-                          ? showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  _success(context),
-                            )
-                          : showDialog(
-                              context: context,
-                              builder: (BuildContext context) =>
-                                  _failure(context),
-                            );
-                      Navigator.pop(context);
+                      addDB();
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Congo()));
                     },
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -385,32 +413,4 @@ class _AddCarState extends State<AddCar> {
       ),
     );
   }
-}
-
-Widget _success(BuildContext context) {
-  return AlertDialog(
-    title: const Text("Success"),
-    content: const Text("Your car was successfully added to our database"),
-    actions: <Widget>[
-      ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text("OK"))
-    ],
-  );
-}
-
-Widget _failure(BuildContext context) {
-  return AlertDialog(
-    title: const Text("Failure"),
-    content: const Text("We encountered some error.Please try again"),
-    actions: <Widget>[
-      ElevatedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text("OK"))
-    ],
-  );
 }

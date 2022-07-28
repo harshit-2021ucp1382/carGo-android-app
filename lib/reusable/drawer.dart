@@ -1,124 +1,224 @@
 import 'package:cargo/Login-page/login_screen.dart';
-
+import 'package:cargo/Wishlist/booked.dart';
+import 'package:cargo/chat/chat.dart';
+import 'package:cargo/model/admin_model.dart';
+import 'package:cargo/Wishlist/wishlist.dart';
+import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cargo/help/help.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import '../Admin-Corner/adminCorner.dart';
-
 import '../Home/home_screen.dart';
-import '../Wishlist/wishlist.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import "color.dart";
-import 'package:cargo/model/admin_model.dart';
 
-class MyDarwer extends StatefulWidget {
-  const MyDarwer({Key? key, required this.curr_page}) : super(key: key);
+class MyDrawer extends StatefulWidget {
+  const MyDrawer({Key? key, required this.currPage}) : super(key: key);
 
-  final String curr_page;
+  final String currPage;
 
   @override
-  State<MyDarwer> createState() => _MyDarwerState();
+  State<MyDrawer> createState() => _MyDrawerState();
 }
 
-class _MyDarwerState extends State<MyDarwer> {
-  User? admin = FirebaseAuth.instance.currentUser;
-  AdminModel loggedInAdmin = AdminModel();
+class _MyDrawerState extends State<MyDrawer> {
+  User? user = FirebaseAuth.instance.currentUser;
+  dynamic loggedInUser;
+  bool admin = false;
+  bool user_ = false;
+
+  Future<void> typeuser() async {
+    if (user == null) {
+      return;
+    } else {
+      var idUser = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user?.uid)
+          .get();
+      user_ = idUser.exists;
+      if (user_) loggedInUser = UserModel.fromMap(idUser.data());
+
+      var idAdmin = await FirebaseFirestore.instance
+          .collection("admins")
+          .doc(user?.uid)
+          .get();
+      admin = idAdmin.exists;
+      if (admin) loggedInUser = AdminModel.fromMap(idAdmin.data());
+      if (mounted) setState(() {});
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("admins")
-        .doc(admin?.uid)
-        .get()
-        .then((value) {
-      this.loggedInAdmin = AdminModel.fromMap(value.data());
-      setState(() {});
-    });
+    typeuser();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(padding: const EdgeInsets.all(0), children: <Widget>[
-        loggedInAdmin.adid != null
+        (admin)
             ? UserAccountsDrawerHeader(
-                accountName: Text("${loggedInAdmin.firstName}"),
-                accountEmail: Text("${loggedInAdmin.email}"),
-                currentAccountPicture: CircleAvatar(
-                    backgroundImage: AssetImage(
-                        "assets/img/admin_avtar.png")), //Image from Server
-              )
-            : DrawerHeader(
-                child: Column(
-                  children: [
-                    Text(
-                      "Please Login/Signup to continue",
-                      style: TextStyle(color: white),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AdminLoginPage()));
-                        },
-                        child: Row(
-                          children: [
-                            Icon(Icons.verified_user),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              "Login/Sign-up >",
-                              style: TextStyle(color: white),
-                            ),
-                          ],
-                        ))
-                  ],
+                accountName: Text("${loggedInUser.firstName}"),
+                accountEmail: Text("${loggedInUser.email}"),
+                currentAccountPicture: const CircleAvatar(
+                  backgroundImage: AssetImage("assets/img/AdminAvatar.png"),
                 ),
-                decoration: BoxDecoration(color: blue),
-              ),
-        SizedBox(
+              )
+            : (user_)
+                ? UserAccountsDrawerHeader(
+                    accountName: Text("${loggedInUser.firstName}"),
+                    accountEmail: Text("${loggedInUser.email}"),
+                    currentAccountPicture: const CircleAvatar(
+                      backgroundImage: AssetImage("assets/img/UserAvatar.png"),
+                    ),
+                  )
+                : DrawerHeader(
+                    child: Column(
+                      children: [
+                        Text(
+                          "Please Login/Signup to continue",
+                          style: TextStyle(color: white),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen()));
+                            },
+                            child: Row(
+                              children: [
+                                Icon(Icons.verified_user),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "Login/Sign-up >",
+                                  style: TextStyle(color: white),
+                                ),
+                              ],
+                            ))
+                      ],
+                    ),
+                    decoration: BoxDecoration(color: blue),
+                  ),
+        const SizedBox(
           height: 10,
         ),
         ListTile(
           leading: Icon(Icons.home),
           title: Text("Home"),
           trailing: Icon(Icons.arrow_right),
-          tileColor: (widget.curr_page == "Home") ? grey : white,
-          onTap: (widget.curr_page == "Home")
+          tileColor: (widget.currPage == "Home") ? grey : white,
+          onTap: (widget.currPage == "Home")
               ? () {}
               : () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const HomeScreen()));
                 },
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
-        ListTile(
-          leading: Icon(Icons.car_rental),
-          title: Text("Admin's Corner"),
-          trailing: Icon(Icons.arrow_right),
-          tileColor: (widget.curr_page == "Admin's Corner") ? grey : white,
-          onTap: (widget.curr_page == "Admin's Corner")
-              ? () {}
-              : () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AdminCorner()));
-                },
-        ),
+        (admin)
+            ? ListTile(
+                leading: Icon(Icons.account_box_outlined),
+                title: Text("Admin's Corner"),
+                trailing: Icon(Icons.arrow_right),
+                tileColor: (widget.currPage == "Admin's Corner") ? grey : white,
+                onTap: (widget.currPage == "Admin's Corner")
+                    ? () {}
+                    : () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AdminCorner()));
+                      },
+              )
+            : SizedBox(width: 0),
+        (admin)
+            ? SizedBox(
+                height: 10,
+              )
+            : SizedBox(
+                height: 0,
+              ),
+        (user_)
+            ? ListTile(
+                leading: Icon(Icons.bookmark),
+                title: Text("Your Wishlist"),
+                trailing: Icon(Icons.arrow_right),
+                tileColor: (widget.currPage == "Your Wishlist") ? grey : white,
+                onTap: (widget.currPage == "Your Wishlist")
+                    ? () {}
+                    : () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => whislist()));
+                      },
+              )
+            : SizedBox(
+                height: 0,
+              ),
+        (user_)
+            ? SizedBox(
+                height: 10,
+              )
+            : SizedBox(
+                height: 0,
+              ),
+        (user_)
+            ? ListTile(
+                leading: Icon(Icons.car_rental),
+                title: Text("Booked Car"),
+                trailing: Icon(Icons.arrow_right),
+                tileColor: (widget.currPage == "Booked Car") ? grey : white,
+                onTap: (widget.currPage == "Booked Car")
+                    ? () {}
+                    : () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => booked()));
+                      },
+              )
+            : SizedBox(
+                height: 0,
+              ),
+        (user_)
+            ? SizedBox(
+                height: 10,
+              )
+            : SizedBox(
+                height: 0,
+              ),
+        (admin || user_)
+            ? ListTile(
+                leading: Icon(Icons.headphones),
+                title: Text("Chat"),
+                trailing: Icon(Icons.arrow_right),
+                tileColor: (widget.currPage == "Chat") ? grey : white,
+                onTap: (widget.currPage == "Chat")
+                    ? () {}
+                    : () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => chatroom(
+                                      id: user!.uid.toString(),
+                                      typeuser: admin ? "admins" : "users",
+                                    )));
+                      },
+              )
+            : Container(),
         SizedBox(
           height: 10,
         ),
@@ -126,8 +226,8 @@ class _MyDarwerState extends State<MyDarwer> {
           leading: Icon(Icons.headphones),
           title: Text("Contact Us"),
           trailing: Icon(Icons.arrow_right),
-          tileColor: (widget.curr_page == "Contact Us") ? grey : white,
-          onTap: (widget.curr_page == "Conatct Us")
+          tileColor: (widget.currPage == "Contact Us") ? grey : white,
+          onTap: (widget.currPage == "Conatct Us")
               ? () {}
               : () {
                   Navigator.push(
@@ -137,16 +237,23 @@ class _MyDarwerState extends State<MyDarwer> {
         const SizedBox(
           height: 10,
         ),
-        ListTile(
-          leading: Icon(Icons.logout_rounded),
-          title: Text("Logout"),
-          trailing: Icon(Icons.arrow_left_rounded),
-          onTap: () {
-            FirebaseAuth.instance.signOut();
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => AdminLoginPage()));
-          },
-        ),
+        (user_ || admin)
+            ? ListTile(
+                leading: Icon(Icons.logout_rounded),
+                title: Text("Logout"),
+                trailing: Icon(Icons.arrow_right),
+                onTap: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pop(context, true);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                  );
+                },
+              )
+            : SizedBox(
+                height: 0,
+              ),
       ]),
     );
   }

@@ -215,7 +215,6 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             errorMessage = "An undefined Error happened.";
         }
         Fluttertoast.showToast(msg: errorMessage!);
-        print(error.code);
       }
     }
   }

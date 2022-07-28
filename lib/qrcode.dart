@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:screenshot/screenshot.dart';
+
+
 
 class QrCode extends StatefulWidget {
   QrCode({Key? key}) : super(key: key);
+
+import 'package:qr_flutter/qr_flutter.dart';
+
 
   @override
   State<QrCode> createState() => _QrCodeState();

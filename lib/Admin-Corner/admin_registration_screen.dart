@@ -382,7 +382,6 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
             errorMessage = "An undefined Error happened.";
         }
         Fluttertoast.showToast(msg: errorMessage!);
-        print(error.code);
       }
     }
   }

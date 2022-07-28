@@ -1,5 +1,4 @@
 import 'package:cargo/reusable/color.dart';
-import 'package:cargo/reusable/drawer.dart';
 import 'package:flutter/material.dart';
 
 class ticket extends StatefulWidget {

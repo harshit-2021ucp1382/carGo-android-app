@@ -1,16 +1,22 @@
+
 import 'dart:ffi';
 
 import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/model/admin_model.dart';
+
+import 'package:cargo/Home/congra.dart';
+import 'package:cargo/chat/chatlobby.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter/src/foundation/key.dart';
 import 'dart:ffi';
 import 'dart:ui';
 import 'dart:io';
 import 'package:flutter/rendering.dart';
+
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -121,6 +127,7 @@ class _carDetailsState extends State<carDetails> {
                 ],
               ),
             ),
+
             SizedBox(height: 15),
             Container(
               child: Padding(
@@ -137,7 +144,26 @@ class _carDetailsState extends State<carDetails> {
                             borderRadius: BorderRadius.circular(24.0),
                           ),
                         ),
-                        onPressed: () => {},
+                        onPressed: ()   async {
+                  if (logged) {
+                    await FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(user?.uid)
+                        .collection("booked")
+                        .doc(data.carID)
+                        .set(data.toJson());
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => chatLobby(
+                                  currId: [user?.uid.toString(), "users"],
+                                  toid: [data.adid, "admins"],
+                                  carModel: data.carModel.toString(),
+                                )));
+                  } else {
+                    Fluttertoast.showToast(msg: ("Not logged in as User"));
+                  }
+                },
                         icon: Icon(
                           Icons.chat,
                           color: Colors.white,
@@ -193,6 +219,8 @@ class _carDetailsState extends State<carDetails> {
             SizedBox(
               height: 15,
             ),
+
+          
             Material(
               elevation: 5,
               borderRadius: BorderRadius.circular(30),
@@ -201,14 +229,16 @@ class _carDetailsState extends State<carDetails> {
                   padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                   minWidth: MediaQuery.of(context).size.width,
                   onPressed: () async {
-                    if (logged)
+                    if (logged) {
                       await FirebaseFirestore.instance
                           .collection("users")
                           .doc(user?.uid)
                           .collection("booked")
                           .doc(data.carID)
                           .set(data.toJson());
-                    else {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => Congo()));
+                    } else {
                       Fluttertoast.showToast(msg: ("Not logged in as User"));
                     }
                   },

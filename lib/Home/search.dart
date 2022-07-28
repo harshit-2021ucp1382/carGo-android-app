@@ -1,6 +1,4 @@
-import 'package:cargo/Home/filter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_place/google_place.dart';
 
 class SearchPage extends StatelessWidget {
@@ -27,11 +25,6 @@ class _searchState extends State<search> {
 
   void autoCompleteSearch(String value) async {
     var result = await googlePlace.queryAutocomplete.get("del");
-    print(result);
-    if (result != null) print(result.predictions);
-    if (result != null) {
-      print(result.predictions);
-    }
 
     if (result != null && result.predictions != null && mounted) {
       setState(() {
@@ -60,7 +53,6 @@ class _searchState extends State<search> {
               child: TextField(
                 onChanged: (value) {
                   if (value.isNotEmpty) {
-                    print(value);
                     autoCompleteSearch(value);
                   } else {
                     if (predictions.length > 0 && mounted) {

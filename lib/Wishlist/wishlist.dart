@@ -1,9 +1,11 @@
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/card.dart';
+import 'package:cargo/reusable/drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../reusable/drawer2.dart';
+
+import '../Home/congra.dart';
 
 class whislist extends StatefulWidget {
   whislist({Key? key}) : super(key: key);
@@ -15,12 +17,25 @@ class whislist extends StatefulWidget {
 class _whislistState extends State<whislist> {
   User? user = FirebaseAuth.instance.currentUser;
   String uid = "";
-  late cardData data;
+  @override
+  listner1() async {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user?.uid)
+        .collection("whislist")
+        .snapshots()
+        .listen((event) {
+      whislist();
+      setState(() {});
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     uid = user!.uid.toString();
     whislist();
+    listner1();
     setState(() {});
   }
 
@@ -31,17 +46,18 @@ class _whislistState extends State<whislist> {
         .doc(uid)
         .collection("whislist")
         .get();
-    setState(() {
-      _whislistcars =
-          List.from(data.docs.map((doc) => cardData.datastore(doc)));
-    });
+    if (mounted)
+      setState(() {
+        _whislistcars =
+            List.from(data.docs.map((doc) => cardData.datastore(doc)));
+      });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Your Wishlist")),
-      drawer: MyDrawer(curr_page: "Your Wishlist"),
+      drawer: MyDrawer(currPage: "Your Wishlist"),
       body: SafeArea(
           child: ListView.builder(
               itemCount: _whislistcars.length,
@@ -57,9 +73,21 @@ class _whislistState extends State<whislist> {
                       child: MaterialButton(
                           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
                           minWidth: MediaQuery.of(context).size.width,
-                          onPressed: () {},
+                          onPressed: () async {
+                            await FirebaseFirestore.instance
+                                .collection("users")
+                                .doc(user?.uid)
+                                .collection("booked")
+                                .doc((_whislistcars[index] as cardData).carID)
+                                .set((_whislistcars[index] as cardData)
+                                    .toJson());
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Congo()));
+                          },
                           child: Text(
-                            "Book Now",
+                            "Rent Now",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 20,

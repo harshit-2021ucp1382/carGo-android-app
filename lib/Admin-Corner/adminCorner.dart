@@ -1,12 +1,10 @@
 import 'package:cargo/Admin-Corner/add_car.dart';
 import 'package:cargo/Admin-Corner/admin_login_screen.dart';
-import 'package:cargo/Login-page/login_screen.dart';
 import 'package:cargo/model/user_model.dart';
 import 'package:cargo/reusable/card.dart';
 import 'package:cargo/reusable/color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../model/admin_model.dart';
 import '../reusable/drawer.dart';
@@ -34,8 +32,19 @@ class _AdminCornerState extends State<AdminCorner> {
         .doc(admin?.uid)
         .get();
     logged_admin = info.exists;
-    print("777777777777777777");
-    print(admin?.uid);
+  }
+
+  @override
+  listner3() async {
+    FirebaseFirestore.instance
+        .collection("admins")
+        .doc(admin?.uid)
+        .collection("cars")
+        .snapshots()
+        .listen((event) {
+      getCars();
+      setState(() {});
+    });
   }
 
   Future getCars() async {
@@ -60,6 +69,7 @@ class _AdminCornerState extends State<AdminCorner> {
         .get()
         .then((value) {
       this.loggedInAdmin = AdminModel.fromMap(value.data());
+      listner3();
       setState(() {});
     });
   }
@@ -68,8 +78,8 @@ class _AdminCornerState extends State<AdminCorner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Admin's Corner")),
-      drawer: const MyDarwer(
-        curr_page: "Admin's Corner",
+      drawer: MyDrawer(
+        currPage: "Admin's Corner",
       ),
       body: (logged_admin)
           ? Container(
