@@ -28,6 +28,8 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
   final _passwordEditingController = new TextEditingController();
   final _confirmPasswordEditingController = new TextEditingController();
   final _phoneNumberEditingController = new TextEditingController();
+  final _adhaarNumberEditingController = TextEditingController();
+  final _upiIdEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +97,8 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
         validator: (value) {
           if (value!.isEmpty) {
             return ("Please Enter Your mobile number");
+          } else if (value.length != 10) {
+            return ("Please enter 10 digit mobile number");
           }
           // reg expression for email validation
           if (!RegExp(r'[0-9]').hasMatch(value)) {
@@ -103,13 +107,48 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
           return null;
         },
         onSaved: (value) {
-          _firstNameEditingController.text = value!;
+          _phoneNumberEditingController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.phone_iphone),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Mobile Number",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ));
+
+    final adhaarNumberField = TextFormField(
+        autofocus: false,
+        controller: _adhaarNumberEditingController,
+        keyboardType: TextInputType.number,
+        inputFormatters: <TextInputFormatter>[
+          // for below version 2 use this
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+// for version 2 and greater youcan also use this
+          FilteringTextInputFormatter.digitsOnly
+        ],
+        validator: (value) {
+          if (value!.isEmpty) {
+            return ("Please Enter Your adhaar number");
+          } else if (value.length != 12) {
+            return ("Please enter 12 digit Adhaar number");
+          }
+          // reg expression for email validation
+          if (!RegExp(r'[0-9]').hasMatch(value)) {
+            return ("Please Enter a valid Adhaar number");
+          }
+          return null;
+        },
+        onSaved: (value) {
+          _adhaarNumberEditingController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.contacts),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Adhaar Number",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -132,13 +171,41 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
           return null;
         },
         onSaved: (value) {
-          _firstNameEditingController.text = value!;
+          _emailEditingController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
           prefixIcon: Icon(Icons.mail),
           contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
           hintText: "Email",
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ));
+
+    final upiIdNumberField = TextFormField(
+        autofocus: false,
+        controller: _upiIdEditingController,
+        keyboardType: TextInputType.emailAddress,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return ("Please Enter Your UPI id");
+          }
+          // reg expression for email validation
+          if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+              .hasMatch(value)) {
+            return ("Please Enter a valid upi Id");
+          }
+          return null;
+        },
+        onSaved: (value) {
+          _upiIdEditingController.text = value!;
+        },
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          prefixIcon: Icon(Icons.account_balance),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "UPI Id",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -159,7 +226,7 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
           }
         },
         onSaved: (value) {
-          _firstNameEditingController.text = value!;
+          _passwordEditingController.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -258,6 +325,14 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
                         const SizedBox(height: 20),
                         emailField,
                         const SizedBox(height: 20),
+                        adhaarNumberField,
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        upiIdNumberField,
+                        const SizedBox(
+                          height: 20,
+                        ),
                         passwordField,
                         const SizedBox(height: 20),
                         confirmPasswordField,
@@ -324,6 +399,8 @@ class _AdminRegScreenState extends State<AdminRegScreen> {
     // writing all the values
     adminModel.email = admin!.email;
     adminModel.mobNumber = _phoneNumberEditingController.text;
+    adminModel.upiId = _upiIdEditingController.text;
+    adminModel.adhaarNumber = _adhaarNumberEditingController.text;
 
     adminModel.adid = admin.uid;
     adminModel.firstName = _firstNameEditingController.text;

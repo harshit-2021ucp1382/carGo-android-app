@@ -1,9 +1,14 @@
+
+import 'package:cargo/Login-page/google_sign_btn.dart';
 import 'package:cargo/Admin-Corner/admin_login_screen.dart';
 import 'package:cargo/Login-page/registration_screen.dart';
 import 'package:cargo/Login-page/reset_pwd.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../Home/home_screen.dart';
 
@@ -17,13 +22,14 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   // form key
   final _formKey = GlobalKey<FormState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
 
   // editing controller
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   // firebase
-  final _auth = FirebaseAuth.instance;
 
   // string for displaying the error Message
   String? errorMessage;
@@ -152,23 +158,45 @@ class _LoginScreenState extends State<LoginScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Don't have an account? "),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        RegistrationScreen()));
-                          },
-                          child: Text(
-                            "SignUp",
-                            style: TextStyle(
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
-                          ),
-                        )
+
+                        logoWidget("assets/img/img_567494.png"),
+                        const SizedBox(height: 45),
+                        emailField,
+                        const SizedBox(height: 25),
+                        passwordField,
+                        const SizedBox(height: 05),
+                        forgetpassword(context),
+                        const SizedBox(height: 35),
+                        loginButton,
+                        const SizedBox(height: 15),
+                        SignInButton(
+                          Buttons.Google,
+                          text: "Sign up with Google",
+                          onPressed: () {},
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("Don't have an account? "),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RegistrationScreen()));
+                                },
+                                child: Text(
+                                  "SignUp",
+                                  style: TextStyle(
+                                      color: Colors.redAccent,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                              )
+                            ]),
+
                       ],
                     ),
                     SizedBox(height: 10),

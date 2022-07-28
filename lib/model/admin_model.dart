@@ -4,9 +4,17 @@ class AdminModel {
   String? firstName;
   String? secondName;
   String? mobNumber;
+  String? upiId;
+  String? adhaarNumber;
 
   AdminModel(
-      {this.adid, this.email, this.firstName, this.secondName, this.mobNumber});
+      {this.adid,
+      this.email,
+      this.firstName,
+      this.secondName,
+      this.mobNumber,
+      this.upiId,
+      this.adhaarNumber});
 
   // receiving data from server
   factory AdminModel.fromMap(map) {
@@ -16,6 +24,8 @@ class AdminModel {
       firstName: map['firstName'],
       secondName: map['secondName'],
       mobNumber: map['mobNumber'],
+      upiId: map['upiId'],
+      adhaarNumber: map['adhaaarNumber'],
     );
   }
 
@@ -27,6 +37,8 @@ class AdminModel {
       'firstName': firstName,
       'secondName': secondName,
       'mobNumber': mobNumber,
+      'upiId': upiId,
+      'adhaarNumber': adhaarNumber
     };
   }
 }
