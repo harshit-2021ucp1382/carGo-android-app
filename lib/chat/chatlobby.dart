@@ -165,15 +165,15 @@ class _chatLobbyState extends State<chatLobby> {
                               margin: const EdgeInsets.all(8),
                               padding: const EdgeInsets.all(4),
                               width: chats[index].content.toString().length *
-                                          18.0 >
-                                      40
+                                          10.0 >
+                                      120
                                   ? chats[index].content.toString().length *
                                               18.0 <
                                           300
                                       ? chats[index].content.toString().length *
-                                          8.0
+                                          16.0
                                       : 250.0
-                                  : 150.0,
+                                  : 100.0,
                               alignment: chats[index].from == widget.currId[0]
                                   ? Alignment.centerRight
                                   : Alignment.centerLeft,

@@ -3,6 +3,8 @@ import 'package:cargo/Login-page/registration_screen.dart';
 import 'package:cargo/Login-page/reset_pwd.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../Home/home_screen.dart';
@@ -139,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    logoWidget("assets/img/img_567494.png"),
+                    logoWidget("assets/img/icon.png"),
                     const SizedBox(height: 45),
                     emailField,
                     const SizedBox(height: 25),
@@ -149,6 +151,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 35),
                     loginButton,
                     const SizedBox(height: 15),
+                    SignInButton(
+                      Buttons.Google,
+                      text: "Sign up with Google",
+                      onPressed: () {},
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -238,6 +248,5 @@ Image logoWidget(String imageName) {
     fit: BoxFit.fitWidth,
     width: 240,
     height: 240,
-    color: const Color.fromARGB(255, 37, 104, 230),
   );
 }

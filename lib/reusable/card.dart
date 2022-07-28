@@ -141,7 +141,9 @@ class _MyCardState extends State<MyCard> {
                       //Text(data["Details"]),
                     ],
                   ),
-                  Text("${widget.data.Rating.toString()}/5 stars"),
+                  Text(widget.data.Rating.toString().length > 3
+                      ? "${widget.data.Rating.toString().substring(0, 3)}/5 stars"
+                      : "${widget.data.Rating.toString()}/5 stars"),
                   TextButton(
                       onPressed: () {},
                       style: ButtonStyle(
