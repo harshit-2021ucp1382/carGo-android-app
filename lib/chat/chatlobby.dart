@@ -138,79 +138,85 @@ class _chatLobbyState extends State<chatLobby> {
 
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      child: Scaffold(
-          appBar: AppBar(title: const Text("Chat Room")),
-          drawer: const MyDrawer(currPage: "Chat Lobby"),
-          body: Padding(
+    return Scaffold(
+        appBar: AppBar(title: const Text("Chat Room")),
+        drawer: const MyDrawer(currPage: "Chat Lobby"),
+        body: SingleChildScrollView(
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      toName,
-                      style: TextStyle(fontSize: 20, color: grey),
-                    ),
-                    ListView.builder(
-                        shrinkWrap: true,
-                        key: UniqueKey(),
-                        itemCount: chats.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            width: 100,
-                            child: Container(
+            child: Column(
+              children: <Widget>[
+                Text(
+                  toName,
+                  style: TextStyle(fontSize: 20, color: grey),
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    key: UniqueKey(),
+                    itemCount: chats.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return SizedBox(
+                        width: 100,
+                        child: Container(
+                          alignment: chats[index].from == widget.currId[0]
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Container(
+                              margin: const EdgeInsets.all(8),
+                              padding: const EdgeInsets.all(4),
+                              width: chats[index].content.toString().length *
+                                          18.0 >
+                                      40
+                                  ? chats[index].content.toString().length *
+                                              18.0 <
+                                          300
+                                      ? chats[index].content.toString().length *
+                                          8.0
+                                      : 250.0
+                                  : 150.0,
                               alignment: chats[index].from == widget.currId[0]
                                   ? Alignment.centerRight
                                   : Alignment.centerLeft,
-                              child: Container(
-                                  margin: const EdgeInsets.all(8),
-                                  padding: const EdgeInsets.all(4),
-                                  alignment:
-                                      chats[index].from == widget.currId[0]
-                                          ? Alignment.centerRight
-                                          : Alignment.centerLeft,
-                                  child: Text(
-                                    chats[index].content.toString(),
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      backgroundColor:
-                                          chats[index].from == widget.currId[0]
-                                              ? Colors.green
-                                              : Colors.blue,
-                                    ),
-                                  )),
-                            ),
-                          );
-                        }),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: TextField(
-                              controller: _send,
-                              decoration:
-                                  InputDecoration(hintText: "Send text"),
-                            ),
-                          ),
-                          IconButton(
-                              onPressed: () async {
-                                if (_send.text != null) {
-                                  sendChat(_send.text);
-                                }
-                              },
-                              icon: Icon(Icons.send))
-                        ],
+                              decoration: BoxDecoration(
+                                  color: chats[index].from == widget.currId[0]
+                                      ? Colors.green
+                                      : Colors.blue,
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(10.0),
+                                      bottomRight: Radius.circular(10.0))),
+                              child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(chats[index].content.toString(),
+                                      style: TextStyle(
+                                          fontSize: 18.0, color: white)))),
+                        ),
+                      );
+                    }),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          controller: _send,
+                          decoration: InputDecoration(hintText: "Send text"),
+                        ),
                       ),
-                    ),
-                  ],
+                      IconButton(
+                          onPressed: () async {
+                            if (_send.text != null) {
+                              sendChat(_send.text);
+                            }
+                          },
+                          icon: Icon(Icons.send))
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          )),
-    );
+          ),
+        ));
     ;
   }
 }
